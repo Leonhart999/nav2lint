@@ -195,6 +195,8 @@ nav2lint --distro jazzy --fix humble_params.yaml    # 确认后再改
 **N001 YAML 语法错误（error）**
 缩进错、括号没闭合等。这时文件无法解析，后面的规则都不会运行，先把语法修好。
 
+文件不是 UTF-8 编码时也报 N001，并给出第一个非法字节所在的行。常见情况是用老编辑器存成了 GBK（ANSI）编码、里面又有中文注释，ROS 2 的 YAML 解析器同样会拒绝这种文件。用 VS Code 打开，在右下角把编码改成 UTF-8 后重新保存即可。`--fix` 不会改动这类文件。
+
 **N002 重复 key（warning）**
 同一层里同一个 key 出现两次。YAML 解析器只保留后一个值，不会报错。
 
@@ -228,6 +230,18 @@ local_costmap:
 
 **N005 屏蔽注释里写了不存在的规则编号（warning）**
 例如 `# nav2lint: disable=S399`。写错编号的屏蔽不会生效，所以单独提醒（见第 9 节）。
+
+**N006 参数没有缩进到 `ros__parameters` 下面（error）**
+参数和 `ros__parameters` 写在了同一层，YAML 语法上没错，但它们不属于 `ros__parameters`，ROS 2 不会把它们当作这个节点的参数。
+
+```yaml
+amcl:
+  ros__parameters:
+  alpha1: 0.2          # N006：和 ros__parameters 在同一层，要再缩进两格
+  max_particles: 2000  # N006：同上
+```
+
+如果 `ros__parameters:` 下面什么都没有，报 warning（参数段是空的）。
 
 ### E：参数类型
 

@@ -77,14 +77,37 @@ def lint_text(text: str, distro: str | None = None, path: str = "<string>", conf
     return Result(path, resolved, reason, kept, hidden)
 
 
+class NotUtf8(Exception):
+    """The file is not valid UTF-8, which the ROS 2 YAML parser rejects as well."""
+
+    def __init__(self, path: str, line: int):
+        super().__init__(f"{path}: not UTF-8 (line {line})")
+        self.path, self.line = path, line
+
+    def result(self) -> Result:
+        msg = (
+            "file is not valid UTF-8 (often a GBK/ANSI file saved by an older editor); "
+            "the ROS 2 YAML parser rejects it too"
+        )
+        return Result(self.path, None, "", [Finding("N001", ERROR, self.line, msg, "re-save the file as UTF-8")])
+
+
 def read_text(path: str | Path) -> str:
     """Read a file keeping its original line endings, so fixes can write it back unchanged elsewhere."""
-    with open(path, encoding="utf-8", newline="") as fh:
-        return fh.read()
+    data = Path(path).read_bytes()
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as e:
+        raise NotUtf8(str(path), data[: e.start].count(b"\n") + 1) from None
+    return text
 
 
 def lint_file(path: str | Path, distro: str | None = None, config: Config | None = None) -> Result:
-    return lint_text(read_text(path), distro, str(path), config)
+    try:
+        text = read_text(path)
+    except NotUtf8 as e:
+        return e.result()
+    return lint_text(text, distro, str(path), config)
 
 
 def apply_fixes(text: str, findings: list[Finding]) -> tuple[str, int]:

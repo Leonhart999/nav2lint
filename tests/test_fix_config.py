@@ -198,3 +198,12 @@ def test_cli_config_error_exit_code(tmp_path, capsys):
     assert main([str(f)]) == 2
     assert "config error" in capsys.readouterr().err
     assert main([str(f), "--no-config"]) == 0
+
+
+def test_cli_fix_leaves_non_utf8_file_alone(tmp_path, capsys):
+    f = tmp_path / "gbk.yaml"
+    data = "# 中文注释\namcl:\n  ros__parameters:\n    max_particles: 2000.0\n".encode("gbk")
+    f.write_bytes(data)
+    assert main([str(f), "--distro", "humble", "--fix"]) == 1
+    assert f.read_bytes() == data
+    assert "N001" in capsys.readouterr().out

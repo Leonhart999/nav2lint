@@ -330,7 +330,22 @@ def test_declared_tables_cover_core_nodes(distro):
 
 
 def test_spelling_ignores_valid_unlisted_params():
-    # min_vel_theta is not in the reference files but every word is known; it must not be flagged as a typo of max_vel_theta
+    # A third-party controller is not in the Nav2 tables; `min_vel_theta` is made of known words,
+    # so the conservative T403 check must not report it as a typo of `max_vel_theta`.
+    text = """
+controller_server:
+  ros__parameters:
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "my_pkg::MyController"
+      min_vel_theta: 0.0
+"""
+    rules = rules_of(text, "humble")
+    assert "T403" not in rules and "T404" not in rules
+
+
+def test_dwb_has_no_min_vel_theta():
+    # DWB declares min_speed_theta, not min_vel_theta (checked in dwb_plugins/kinematic_parameters.cpp)
     text = """
 controller_server:
   ros__parameters:
@@ -338,8 +353,57 @@ controller_server:
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
       min_vel_theta: 0.0
+      min_speed_theta: 0.0
 """
-    assert "T403" not in rules_of(text, "humble")
+    f = [(x.rule, x.line) for x in lint_text(text, "humble").findings]
+    assert f == [("T404", 7)]
+
+
+def test_rotation_shim_accepts_primary_controller_params():
+    text = """
+velocity_smoother:
+  ros__parameters:
+    max_velocity: [0.26, 0.0, 1.0]
+controller_server:
+  ros__parameters:
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "nav2_rotation_shim_controller::RotationShimController"
+      primary_controller: "dwb_core::DWBLocalPlanner"
+      angular_dist_threshold: 0.785
+      max_vel_x: 0.5
+      vx_samples: 20.0
+      critics: ["BaseObstacle"]
+      BaseObstacle.scale: 0.02
+      typo_param: 1.0
+"""
+    f = [(x.rule, x.line) for x in lint_text(text, "humble").findings]
+    # vx_samples is a DWB int (E102); max_vel_x exceeds the smoother (S305); only typo_param is unknown (T404)
+    assert sorted(f) == [("E102", 13), ("S305", 8), ("T404", 16)]
+
+
+def test_node_name_typo_line_with_comment_before_ros_parameters():
+    text = "controler_server:\n  # tuned for the lab robot\n  ros__parameters:\n    controller_frequency: 20.0\n"
+    assert [(x.rule, x.line) for x in lint_text(text, "humble").findings] == [("T401", 1)]
+
+
+def test_params_next_to_ros_parameters():
+    text = (
+        "amcl:\n  ros__parameters:\n  alpha1: 0.2\n"
+        "planner_server:\n  ros__parameters:\n    expected_planner_frequency: 20.0\n  planner_plugins: [\"GridBased\"]\n"
+        "map_saver:\n  ros__parameters:\n"
+    )
+    f = [(x.rule, x.severity, x.line) for x in lint_text(text, "humble").findings]
+    assert f == [("N006", "error", 3), ("N006", "error", 7), ("N006", "warning", 9)]
+
+
+def test_non_utf8_file_is_reported_not_crashing(tmp_path):
+    from nav2lint import lint_file
+
+    p = tmp_path / "gbk.yaml"
+    p.write_bytes("amcl:\n  ros__parameters:\n    # 中文注释\n    alpha1: 0.2\n".encode("gbk"))
+    f = lint_file(p).findings
+    assert [(x.rule, x.line) for x in f] == [("N001", 3)] and "UTF-8" in f[0].message
 
 
 def test_cli_exit_codes(tmp_path, capsys):

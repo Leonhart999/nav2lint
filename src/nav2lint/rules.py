@@ -34,7 +34,7 @@ ERROR, WARNING, INFO = "error", "warning", "info"
 SEVERITIES = (ERROR, WARNING, INFO)
 
 RULE_IDS = frozenset(
-    ["N001", "N002", "N003", "N004", "N005", "E101", "E102", "P101", "P102", "P103"]
+    ["N001", "N002", "N003", "N004", "N005", "N006", "E101", "E102", "P101", "P102", "P103"]
     + [f"D2{i:02d}" for i in range(1, 12)]
     + [f"S30{i}" for i in range(1, 8)]
     + ["T401", "T402", "T403", "T404"]
@@ -96,7 +96,8 @@ def key_line(scope: Scope, key: str) -> int:
 
 
 def plugin_is(scope: Scope, *suffixes: str) -> bool:
-    return scope.plugin is not None and normalize_plugin(scope.plugin).endswith(suffixes)
+    """True if the scope's plugin, or the controller a RotationShim wraps, ends with one of `suffixes`."""
+    return any(p is not None and normalize_plugin(p).endswith(suffixes) for p in (scope.plugin, scope.primary))
 
 
 def all_scopes(ctx: Context):
@@ -252,6 +253,29 @@ def check_structure(ctx: Context) -> None:
                 f"use:\n{s.name}:\n  {s.name}:\n    ros__parameters:",
             )
 
+    # N006: parameters indented at the level of ros__parameters instead of under it
+    def misplaced(n: Node, name: str) -> None:
+        if n.kind != "map":
+            return
+        if "ros__parameters" not in n.value:
+            for k, v in n.value.items():
+                misplaced(v, k)
+            return
+        rp = n.value["ros__parameters"]
+        others = [k for k in n.value if k != "ros__parameters"]
+        for k in others:
+            ctx.add(
+                "N006",
+                ERROR,
+                n.key_lines[k],
+                f"`{k}` is next to `ros__parameters`, not under it, so ROS 2 does not load it as a parameter of `{name}`",
+                "indent it under ros__parameters",
+            )
+        if rp.kind == "scalar" and not others:
+            ctx.add("N006", WARNING, n.key_lines["ros__parameters"], f"`ros__parameters` of `{name}` is empty")
+
+    for k, v in root.value.items():
+        misplaced(v, k)
 
 # ---------- E1xx parameter types ----------
 
@@ -279,13 +303,26 @@ def known_params(ctx: Context, schema: str) -> dict[str, set[str]] | None:
     return out
 
 
+def lookup(ctx: Context, scope: Scope, key: str) -> tuple[dict[str, set[str]] | None, str]:
+    """(known parameters for `key`'s scope, leaf name). A RotationShim scope also accepts the shim's own params."""
+    schema, leaf = split_key(scope, key)
+    table = known_params(ctx, schema)
+    if scope.extra_schema and "." not in key:
+        extra = known_params(ctx, scope.extra_schema)
+        if extra is not None:
+            merged = {k: set(v) for k, v in (table or {}).items()}
+            for k, ts in extra.items():
+                merged.setdefault(k, set()).update(ts)
+            table = merged
+    return table, leaf
+
+
 def _expected(ctx: Context, scope: Scope, key: str) -> set[str] | None:
     if scope.node in COSTMAPS and scope.path == "" and key == "footprint":
         return {"str"}  # Nav2 footprint is a string "[[x, y], ...]"
     if scope.registered_by == "polygons" and key == "points":
         return None  # distro dependent, handled by D210
-    schema, leaf = split_key(scope, key)
-    table = known_params(ctx, schema)
+    table, leaf = lookup(ctx, scope, key)
     return (table or {}).get(leaf) or None
 
 
@@ -545,7 +582,7 @@ def check_migration(ctx: Context) -> None:
         ctx.add(
             "D211",
             WARNING,
-            rs.line - 1 if rs.line > 1 else 1,
+            rs.key_line,
             "since Humble, recoveries_server is renamed to behavior_server; no node reads this section",
             "rename it to behavior_server and change nav2_recoveries/... plugins to nav2_behaviors/... (`::` since Jazzy)",
         )
@@ -709,7 +746,7 @@ def check_spelling(ctx: Context) -> None:
         if sec.name not in ref.nodes and not sec.name.startswith("/") and _looks_misspelled(sec.name, vocab):
             m = close(sec.name, ref.nodes)
             if m:
-                ctx.add("T401", WARNING, sec.line - 1 if sec.line > 1 else 1, f"unknown node name `{sec.name}`", f"did you mean `{m}`?")
+                ctx.add("T401", WARNING, sec.key_line, f"unknown node name `{sec.name}`", f"did you mean `{m}`?")
     for sc in all_scopes(ctx):
         if sc.plugin:
             norm = normalize_plugin(sc.plugin)
@@ -720,8 +757,8 @@ def check_spelling(ctx: Context) -> None:
         for k, v in sc.params.value.items():
             if v.kind == "map":
                 continue
-            schema, leaf = split_key(sc, k)
-            table = known_params(ctx, schema)
+            schema, _ = split_key(sc, k)
+            table, leaf = lookup(ctx, sc, k)
             line = key_line(sc, k)
             if table is not None:
                 if leaf in table or line in migrated:

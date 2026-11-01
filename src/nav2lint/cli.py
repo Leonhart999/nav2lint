@@ -11,7 +11,7 @@ from pathlib import Path
 
 from . import __version__
 from .config import CONFIG_NAMES, Config, ConfigError, _config_in, find_config, load_config
-from .lint import Result, fix_text, lint_text, read_text
+from .lint import NotUtf8, Result, fix_text, lint_text, read_text
 from .loader import load
 from .rules import ERROR, INFO, WARNING
 from .schema import DISTROS, find_nodes, nav2_nodes
@@ -145,6 +145,9 @@ def _run(files: list[Path], args) -> tuple[list[Result], int]:
         except ConfigError as e:
             print(f"config error: {e}", file=sys.stderr)
             return results, 2
+        except NotUtf8 as e:
+            results.append(e.result())  # reported like any other finding; never rewritten by --fix
+            continue
         except OSError as e:
             print(f"{path}: cannot read: {e}", file=sys.stderr)
             return results, 2

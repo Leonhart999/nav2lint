@@ -119,11 +119,12 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 
 | ID | Severity | What it checks |
 |---|---|---|
-| N001 | error | YAML syntax error (with line number) |
+| N001 | error | YAML syntax error (with line number), or a file that is not UTF-8 |
 | N002 | warning | Duplicate key (both PyYAML and ROS 2 silently keep the last value) |
 | N003 | error | Top-level node without `ros__parameters`, or misspelled as `ros_parameters` |
 | N004 | error | Costmap nested only one level (should be `local_costmap: local_costmap: ros__parameters`) |
 | N005 | warning | Unknown rule ID in a `# nav2lint:` comment |
+| N006 | error/warning | Parameters indented next to `ros__parameters` instead of under it (error); empty `ros__parameters` (warning) |
 | E101 | error | Array mixing int/float, or nested array (typically footprint written as a list) |
 | E102 | error | Type differs from what Nav2 declares, e.g. a double parameter written as integer `1` |
 | P101 | error/warning | Name listed in a plugin list but never defined |

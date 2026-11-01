@@ -68,6 +68,8 @@ class Scope:
     plugin: str | None = None  # raw `plugin` string
     line: int = 1  # line of the scope's key
     children: list["Scope"] = field(default_factory=list)
+    primary: str | None = None  # RotationShim: the wrapped controller (primary_controller)
+    extra_schema: str | None = None  # RotationShim: the shim's own parameter table
 
     def full(self, key: str) -> str:
         return f"{self.path}.{key}" if self.path else key
@@ -78,14 +80,15 @@ class NodeSection:
     name: str  # node name (the key right above ros__parameters)
     yaml_path: list[str]  # key path from the root to the key above ros__parameters
     params: Node  # the ros__parameters mapping
-    line: int
+    line: int  # line of the ros__parameters key
     root: Scope
+    key_line: int = 1  # line of the node name key
 
 
 def find_nodes(root: Node | None) -> list[NodeSection]:
     out: list[NodeSection] = []
 
-    def rec(n: Node, path: list[str]) -> None:
+    def rec(n: Node, path: list[str], key_line: int) -> None:
         if n.kind != "map":
             return
         rp = n.get("ros__parameters")
@@ -93,13 +96,13 @@ def find_nodes(root: Node | None) -> list[NodeSection]:
             if rp.kind == "map":
                 name = path[-1]
                 line = n.key_lines["ros__parameters"]
-                out.append(NodeSection(name, path, rp, line, build_scopes(name, rp, line)))
+                out.append(NodeSection(name, path, rp, line, build_scopes(name, rp, line), key_line))
             return
         for k, v in n.value.items():
-            rec(v, path + [k])
+            rec(v, path + [k], n.key_lines[k])
 
     if root is not None:
-        rec(root, [])
+        rec(root, [], 1)
     return out
 
 
@@ -121,7 +124,15 @@ def _fill(scope: Scope) -> None:
         plugin_node = v.get("plugin")
         plugin = plugin_node.value if plugin_node is not None and plugin_node.kind == "scalar" else None
         reg = named.get(k)
-        if isinstance(plugin, str):
+        primary = None
+        if isinstance(plugin, str) and normalize_plugin(plugin).endswith("RotationShimController"):
+            # The shim forwards its namespace to the wrapped controller, so the scope holds both sets of params.
+            prim = v.get("primary_controller")
+            if prim is not None and prim.kind == "scalar" and isinstance(prim.value, str):
+                primary = prim.value
+        if primary:
+            schema = f"plugin:{normalize_plugin(primary)}"
+        elif isinstance(plugin, str):
             schema = f"plugin:{normalize_plugin(plugin)}"
         elif reg is not None and not (reg == "critics" and scope.schema.endswith("DWBLocalPlanner")):
             schema = f"{scope.schema}/{reg}"
@@ -131,6 +142,9 @@ def _fill(scope: Scope) -> None:
         child = Scope(
             scope.node, scope.full(k), schema, v, reg, plugin if isinstance(plugin, str) else None, scope.params.key_lines[k]
         )
+        if primary:
+            child.primary = primary
+            child.extra_schema = f"plugin:{normalize_plugin(plugin)}"
         _fill(child)
         scope.children.append(child)
 
