@@ -1,0 +1,4019 @@
+{
+ "distro": "humble",
+ "nav2_commit": "3c3db59",
+ "global": {},
+ "nodes": {
+  "amcl": {
+   "alpha1": [
+    "float"
+   ],
+   "alpha2": [
+    "float"
+   ],
+   "alpha3": [
+    "float"
+   ],
+   "alpha4": [
+    "float"
+   ],
+   "alpha5": [
+    "float"
+   ],
+   "always_reset_initial_pose": [
+    "bool"
+   ],
+   "base_frame_id": [
+    "str"
+   ],
+   "beam_skip_distance": [
+    "float"
+   ],
+   "beam_skip_error_threshold": [
+    "float"
+   ],
+   "beam_skip_threshold": [
+    "float"
+   ],
+   "do_beamskip": [
+    "bool"
+   ],
+   "first_map_only": [
+    "bool"
+   ],
+   "global_frame_id": [
+    "str"
+   ],
+   "lambda_short": [
+    "float"
+   ],
+   "laser_likelihood_max_dist": [
+    "float"
+   ],
+   "laser_max_range": [
+    "float"
+   ],
+   "laser_min_range": [
+    "float"
+   ],
+   "laser_model_type": [
+    "str"
+   ],
+   "map_topic": [
+    "str"
+   ],
+   "max_beams": [
+    "int"
+   ],
+   "max_particles": [
+    "int"
+   ],
+   "min_particles": [
+    "int"
+   ],
+   "odom_frame_id": [
+    "str"
+   ],
+   "pf_err": [
+    "float"
+   ],
+   "pf_z": [
+    "float"
+   ],
+   "recovery_alpha_fast": [
+    "float"
+   ],
+   "recovery_alpha_slow": [
+    "float"
+   ],
+   "resample_interval": [
+    "int"
+   ],
+   "robot_model_type": [
+    "str"
+   ],
+   "save_pose_rate": [
+    "float"
+   ],
+   "scan_topic": [
+    "str"
+   ],
+   "set_initial_pose": [
+    "bool"
+   ],
+   "sigma_hit": [
+    "float"
+   ],
+   "tf_broadcast": [
+    "bool"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "update_min_a": [
+    "float"
+   ],
+   "update_min_d": [
+    "float"
+   ],
+   "z_hit": [
+    "float"
+   ],
+   "z_max": [
+    "float"
+   ],
+   "z_rand": [
+    "float"
+   ],
+   "z_short": [
+    "float"
+   ]
+  },
+  "behavior_server": {
+   "behavior_plugins": [],
+   "cmd_vel_teleop": [
+    "str"
+   ],
+   "costmap_topic": [
+    "str"
+   ],
+   "cycle_frequency": [
+    "float"
+   ],
+   "footprint_topic": [
+    "str"
+   ],
+   "global_frame": [
+    "str"
+   ],
+   "max_rotational_vel": [
+    "float"
+   ],
+   "min_rotational_vel": [
+    "float"
+   ],
+   "projection_time": [
+    "float"
+   ],
+   "robot_base_frame": [
+    "str"
+   ],
+   "rotational_acc_lim": [
+    "float"
+   ],
+   "simulate_ahead_time": [
+    "float"
+   ],
+   "simulation_time_step": [
+    "float"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "bt_navigator": {
+   "always_reload_bt_xml": [
+    "bool"
+   ],
+   "bt_loop_duration": [
+    "int"
+   ],
+   "default_nav_through_poses_bt_xml": [
+    "str"
+   ],
+   "default_nav_to_pose_bt_xml": [
+    "str"
+   ],
+   "default_server_timeout": [
+    "int"
+   ],
+   "global_frame": [
+    "str"
+   ],
+   "goal_blackboard_id": [
+    "str"
+   ],
+   "goal_reached_tol": [
+    "float"
+   ],
+   "goals_blackboard_id": [
+    "str"
+   ],
+   "odom_topic": [
+    "str"
+   ],
+   "path_blackboard_id": [
+    "str"
+   ],
+   "plugin_lib_names": [],
+   "robot_base_frame": [
+    "str"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "wait_for_service_timeout": [
+    "int"
+   ]
+  },
+  "collision_monitor": {
+   "base_frame_id": [
+    "str"
+   ],
+   "base_shift_correction": [
+    "bool"
+   ],
+   "cmd_vel_in_topic": [
+    "str"
+   ],
+   "cmd_vel_out_topic": [
+    "str"
+   ],
+   "observation_sources": [
+    "list[str]"
+   ],
+   "odom_frame_id": [
+    "str"
+   ],
+   "polygons": [
+    "list[str]"
+   ],
+   "source_timeout": [
+    "float"
+   ],
+   "stop_pub_timeout": [
+    "float"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "controller_server": {
+   "controller_frequency": [
+    "float"
+   ],
+   "controller_plugins": [],
+   "failure_tolerance": [
+    "float"
+   ],
+   "goal_checker_plugins": [],
+   "min_theta_velocity_threshold": [
+    "float"
+   ],
+   "min_x_velocity_threshold": [
+    "float"
+   ],
+   "min_y_velocity_threshold": [
+    "float"
+   ],
+   "progress_checker_plugin": [],
+   "publish_zero_velocity": [
+    "bool"
+   ],
+   "speed_limit_topic": [
+    "str"
+   ]
+  },
+  "costmap_filter_info_server": {
+   "base": [
+    "float"
+   ],
+   "filter_info_topic": [
+    "str"
+   ],
+   "mask_topic": [
+    "str"
+   ],
+   "multiplier": [
+    "float"
+   ],
+   "type": [
+    "int"
+   ]
+  },
+  "global_costmap": {
+   "always_send_full_costmap": [
+    "bool"
+   ],
+   "filters": [
+    "list[str]"
+   ],
+   "footprint": [
+    "str"
+   ],
+   "footprint_padding": [
+    "float"
+   ],
+   "global_frame": [
+    "str"
+   ],
+   "height": [
+    "int"
+   ],
+   "lethal_cost_threshold": [
+    "int"
+   ],
+   "map_topic": [],
+   "observation_sources": [
+    "str"
+   ],
+   "origin_x": [
+    "float"
+   ],
+   "origin_y": [
+    "float"
+   ],
+   "plugins": [],
+   "publish_frequency": [
+    "float"
+   ],
+   "resolution": [
+    "float"
+   ],
+   "robot_base_frame": [
+    "str"
+   ],
+   "robot_radius": [
+    "float"
+   ],
+   "rolling_window": [
+    "bool"
+   ],
+   "track_unknown_space": [
+    "bool"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "trinary_costmap": [
+    "bool"
+   ],
+   "unknown_cost_value": [],
+   "update_frequency": [
+    "float"
+   ],
+   "use_maximum": [
+    "bool"
+   ],
+   "width": [
+    "int"
+   ]
+  },
+  "local_costmap": {
+   "always_send_full_costmap": [
+    "bool"
+   ],
+   "filters": [
+    "list[str]"
+   ],
+   "footprint": [
+    "str"
+   ],
+   "footprint_padding": [
+    "float"
+   ],
+   "global_frame": [
+    "str"
+   ],
+   "height": [
+    "int"
+   ],
+   "lethal_cost_threshold": [
+    "int"
+   ],
+   "map_topic": [],
+   "observation_sources": [
+    "str"
+   ],
+   "origin_x": [
+    "float"
+   ],
+   "origin_y": [
+    "float"
+   ],
+   "plugins": [],
+   "publish_frequency": [
+    "float"
+   ],
+   "resolution": [
+    "float"
+   ],
+   "robot_base_frame": [
+    "str"
+   ],
+   "robot_radius": [
+    "float"
+   ],
+   "rolling_window": [
+    "bool"
+   ],
+   "track_unknown_space": [
+    "bool"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "trinary_costmap": [
+    "bool"
+   ],
+   "unknown_cost_value": [],
+   "update_frequency": [
+    "float"
+   ],
+   "use_maximum": [
+    "bool"
+   ],
+   "width": [
+    "int"
+   ]
+  },
+  "map_saver": {
+   "free_thresh_default": [
+    "float"
+   ],
+   "map_subscribe_transient_local": [
+    "bool"
+   ],
+   "occupied_thresh_default": [
+    "float"
+   ],
+   "save_map_timeout": [
+    "float"
+   ]
+  },
+  "map_server": {
+   "frame_id": [
+    "str"
+   ],
+   "topic_name": [
+    "str"
+   ],
+   "yaml_filename": [
+    "str"
+   ]
+  },
+  "planner_server": {
+   "expected_planner_frequency": [
+    "float"
+   ],
+   "planner_plugins": []
+  },
+  "route_server": {
+   "aggregate_blocked_ids": [
+    "bool"
+   ],
+   "base_frame": [
+    "str"
+   ],
+   "boundary_radius_to_achieve_node": [
+    "float"
+   ],
+   "costmap_topic": [
+    "str"
+   ],
+   "edge_cost_functions": [],
+   "enable_nn_search": [
+    "bool"
+   ],
+   "global_frame": [
+    "str"
+   ],
+   "graph_file_loader": [],
+   "graph_file_saver": [],
+   "graph_filepath": [
+    "str"
+   ],
+   "max_iterations": [
+    "int"
+   ],
+   "max_nn_search_iterations": [
+    "int"
+   ],
+   "max_planning_time": [
+    "float"
+   ],
+   "max_prune_dist_from_edge": [
+    "float"
+   ],
+   "min_prune_dist_from_goal": [
+    "float"
+   ],
+   "min_prune_dist_from_start": [
+    "float"
+   ],
+   "num_nearest_nodes": [
+    "int"
+   ],
+   "operations": [],
+   "path_density": [
+    "float"
+   ],
+   "prune_goal": [
+    "bool"
+   ],
+   "radius_to_achieve_node": [
+    "float"
+   ],
+   "route_frame": [
+    "str"
+   ],
+   "smooth_corners": [
+    "bool"
+   ],
+   "smoothing_radius": [
+    "float"
+   ],
+   "tracker_update_rate": [
+    "float"
+   ]
+  },
+  "smoother_server": {
+   "costmap_topic": [
+    "str"
+   ],
+   "footprint_topic": [
+    "str"
+   ],
+   "robot_base_frame": [
+    "str"
+   ],
+   "smoother_plugins": [],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "velocity_smoother": {
+   "deadband_velocity": [
+    "list[float]"
+   ],
+   "feedback": [
+    "str"
+   ],
+   "max_accel": [
+    "list[float]"
+   ],
+   "max_decel": [
+    "list[float]"
+   ],
+   "max_velocity": [
+    "list[float]"
+   ],
+   "min_velocity": [
+    "list[float]"
+   ],
+   "odom_duration": [
+    "float"
+   ],
+   "odom_topic": [
+    "str"
+   ],
+   "scale_velocities": [
+    "bool"
+   ],
+   "smoothing_frequency": [
+    "float"
+   ],
+   "velocity_timeout": [
+    "float"
+   ]
+  },
+  "waypoint_follower": {
+   "loop_rate": [
+    "int"
+   ],
+   "stop_on_failure": [
+    "bool"
+   ],
+   "waypoint_task_executor_plugin": [
+    "str"
+   ]
+  }
+ },
+ "plugins": {
+  "dwb_core::DWBLocalPlanner": {
+   "acc_lim_theta": [
+    "float"
+   ],
+   "acc_lim_x": [
+    "float"
+   ],
+   "acc_lim_y": [
+    "float"
+   ],
+   "angular_granularity": [
+    "float"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "debug_trajectory_details": [
+    "bool"
+   ],
+   "decel_lim_theta": [
+    "float"
+   ],
+   "decel_lim_x": [
+    "float"
+   ],
+   "decel_lim_y": [
+    "float"
+   ],
+   "default_critic_namespaces": [
+    "list[str]"
+   ],
+   "discretize_by_time": [
+    "bool"
+   ],
+   "forward_prune_distance": [
+    "float"
+   ],
+   "include_last_point": [
+    "bool"
+   ],
+   "limit_vel_cmd_in_traj": [
+    "bool"
+   ],
+   "linear_granularity": [
+    "float"
+   ],
+   "marker_lifetime": [
+    "float"
+   ],
+   "max_speed_xy": [
+    "float"
+   ],
+   "max_vel_theta": [
+    "float"
+   ],
+   "max_vel_x": [
+    "float"
+   ],
+   "max_vel_y": [
+    "float"
+   ],
+   "min_speed_theta": [
+    "float"
+   ],
+   "min_speed_xy": [
+    "float"
+   ],
+   "min_vel_x": [
+    "float"
+   ],
+   "min_vel_y": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "prune_plan": [
+    "bool"
+   ],
+   "publish_cost_grid_pc": [
+    "bool"
+   ],
+   "publish_evaluation": [
+    "bool"
+   ],
+   "publish_global_plan": [
+    "bool"
+   ],
+   "publish_local_plan": [
+    "bool"
+   ],
+   "publish_trajectories": [
+    "bool"
+   ],
+   "publish_transformed_plan": [
+    "bool"
+   ],
+   "rot_stopped_velocity": [
+    "float"
+   ],
+   "short_circuit_trajectory_evaluation": [
+    "bool"
+   ],
+   "shorten_transformed_plan": [
+    "bool"
+   ],
+   "sim_period": [
+    "float"
+   ],
+   "sim_time": [
+    "float"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "time_granularity": [
+    "float"
+   ],
+   "trajectory_generator_name": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "vtheta_samples": [
+    "int"
+   ],
+   "vx_samples": [
+    "int"
+   ],
+   "vy_samples": [
+    "int"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ],
+   "yaw_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::BaseObstacleCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::GoalAlignCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::GoalDistCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::ObstacleFootprintCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::OscillationCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::PathAlignCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::PathDistCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::PreferForwardCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::RotateToGoalCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_critics::TwirlingCritic": {
+   "plugin": [
+    "str"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_plugins::LimitedAccelGenerator": {
+   "acc_lim_theta": [
+    "float"
+   ],
+   "acc_lim_x": [
+    "float"
+   ],
+   "acc_lim_y": [
+    "float"
+   ],
+   "angular_granularity": [
+    "float"
+   ],
+   "decel_lim_theta": [
+    "float"
+   ],
+   "decel_lim_x": [
+    "float"
+   ],
+   "decel_lim_y": [
+    "float"
+   ],
+   "discretize_by_time": [
+    "bool"
+   ],
+   "include_last_point": [
+    "bool"
+   ],
+   "limit_vel_cmd_in_traj": [
+    "bool"
+   ],
+   "linear_granularity": [
+    "float"
+   ],
+   "max_speed_xy": [
+    "float"
+   ],
+   "max_vel_theta": [
+    "float"
+   ],
+   "max_vel_x": [
+    "float"
+   ],
+   "max_vel_y": [
+    "float"
+   ],
+   "min_speed_theta": [
+    "float"
+   ],
+   "min_speed_xy": [
+    "float"
+   ],
+   "min_vel_x": [
+    "float"
+   ],
+   "min_vel_y": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "sim_period": [
+    "float"
+   ],
+   "sim_time": [
+    "float"
+   ],
+   "time_granularity": [
+    "float"
+   ],
+   "vtheta_samples": [
+    "int"
+   ],
+   "vx_samples": [
+    "int"
+   ],
+   "vy_samples": [
+    "int"
+   ]
+  },
+  "dwb_plugins::SimpleGoalChecker": {
+   "acc_lim_theta": [
+    "float"
+   ],
+   "acc_lim_x": [
+    "float"
+   ],
+   "acc_lim_y": [
+    "float"
+   ],
+   "decel_lim_theta": [
+    "float"
+   ],
+   "decel_lim_x": [
+    "float"
+   ],
+   "decel_lim_y": [
+    "float"
+   ],
+   "max_speed_xy": [
+    "float"
+   ],
+   "max_vel_theta": [
+    "float"
+   ],
+   "max_vel_x": [
+    "float"
+   ],
+   "max_vel_y": [
+    "float"
+   ],
+   "min_speed_theta": [
+    "float"
+   ],
+   "min_speed_xy": [
+    "float"
+   ],
+   "min_vel_x": [
+    "float"
+   ],
+   "min_vel_y": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "rot_stopped_velocity": [
+    "float"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "vtheta_samples": [
+    "int"
+   ],
+   "vx_samples": [
+    "int"
+   ],
+   "vy_samples": [
+    "int"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ],
+   "yaw_goal_tolerance": [
+    "float"
+   ]
+  },
+  "dwb_plugins::StandardTrajectoryGenerator": {
+   "acc_lim_theta": [
+    "float"
+   ],
+   "acc_lim_x": [
+    "float"
+   ],
+   "acc_lim_y": [
+    "float"
+   ],
+   "angular_granularity": [
+    "float"
+   ],
+   "decel_lim_theta": [
+    "float"
+   ],
+   "decel_lim_x": [
+    "float"
+   ],
+   "decel_lim_y": [
+    "float"
+   ],
+   "discretize_by_time": [
+    "bool"
+   ],
+   "include_last_point": [
+    "bool"
+   ],
+   "limit_vel_cmd_in_traj": [
+    "bool"
+   ],
+   "linear_granularity": [
+    "float"
+   ],
+   "max_speed_xy": [
+    "float"
+   ],
+   "max_vel_theta": [
+    "float"
+   ],
+   "max_vel_x": [
+    "float"
+   ],
+   "max_vel_y": [
+    "float"
+   ],
+   "min_speed_theta": [
+    "float"
+   ],
+   "min_speed_xy": [
+    "float"
+   ],
+   "min_vel_x": [
+    "float"
+   ],
+   "min_vel_y": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "sim_period": [
+    "float"
+   ],
+   "sim_time": [
+    "float"
+   ],
+   "time_granularity": [
+    "float"
+   ],
+   "vtheta_samples": [
+    "int"
+   ],
+   "vx_samples": [
+    "int"
+   ],
+   "vy_samples": [
+    "int"
+   ]
+  },
+  "dwb_plugins::StoppedGoalChecker": {
+   "acc_lim_theta": [
+    "float"
+   ],
+   "acc_lim_x": [
+    "float"
+   ],
+   "acc_lim_y": [
+    "float"
+   ],
+   "decel_lim_theta": [
+    "float"
+   ],
+   "decel_lim_x": [
+    "float"
+   ],
+   "decel_lim_y": [
+    "float"
+   ],
+   "max_speed_xy": [
+    "float"
+   ],
+   "max_vel_theta": [
+    "float"
+   ],
+   "max_vel_x": [
+    "float"
+   ],
+   "max_vel_y": [
+    "float"
+   ],
+   "min_speed_theta": [
+    "float"
+   ],
+   "min_speed_xy": [
+    "float"
+   ],
+   "min_vel_x": [
+    "float"
+   ],
+   "min_vel_y": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "rot_stopped_velocity": [
+    "float"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "vtheta_samples": [
+    "int"
+   ],
+   "vx_samples": [
+    "int"
+   ],
+   "vy_samples": [
+    "int"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ],
+   "yaw_goal_tolerance": [
+    "float"
+   ]
+  },
+  "mppi::critics::ConstraintCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::CostCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::GoalAngleCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::GoalCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::ObstaclesCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::PathAlignCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::PathAlignLegacyCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::PathAngleCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::PathFollowCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::PreferForwardCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::TwirlingCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "mppi::critics::VelocityDeadbandCritic": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "nav2_amcl::DifferentialMotionModel": {
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_amcl::OmniMotionModel": {
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_behaviors::AssistedTeleop": {
+   "acceleration_limit": [
+    "float"
+   ],
+   "deceleration_limit": [
+    "float"
+   ],
+   "minimum_speed": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_behaviors::BackUp": {
+   "acceleration_limit": [
+    "float"
+   ],
+   "deceleration_limit": [
+    "float"
+   ],
+   "minimum_speed": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_behaviors::DriveOnHeading": {
+   "acceleration_limit": [
+    "float"
+   ],
+   "deceleration_limit": [
+    "float"
+   ],
+   "minimum_speed": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_behaviors::Spin": {
+   "acceleration_limit": [
+    "float"
+   ],
+   "deceleration_limit": [
+    "float"
+   ],
+   "minimum_speed": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_behaviors::Wait": {
+   "acceleration_limit": [
+    "float"
+   ],
+   "deceleration_limit": [
+    "float"
+   ],
+   "minimum_speed": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_constrained_smoother::ConstrainedSmoother": {
+   "cost_check_points": [
+    "list[float]"
+   ],
+   "cusp_zone_length": [
+    "float"
+   ],
+   "debug_optimizer": [
+    "bool"
+   ],
+   "fn_tol": [
+    "float"
+   ],
+   "gradient_tol": [
+    "float"
+   ],
+   "keep_goal_orientation": [
+    "bool"
+   ],
+   "keep_start_orientation": [
+    "bool"
+   ],
+   "linear_solver_type": [
+    "str"
+   ],
+   "max_iterations": [
+    "int"
+   ],
+   "minimum_turning_radius": [
+    "float"
+   ],
+   "param_tol": [
+    "float"
+   ],
+   "path_downsampling_factor": [
+    "int"
+   ],
+   "path_upsampling_factor": [
+    "int"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "reversing_enabled": [
+    "bool"
+   ],
+   "w_cost": [
+    "float"
+   ],
+   "w_cost_cusp_multiplier": [
+    "float"
+   ],
+   "w_curve": [
+    "float"
+   ],
+   "w_dist": [
+    "float"
+   ],
+   "w_smooth": [
+    "float"
+   ]
+  },
+  "nav2_controller::PoseProgressChecker": {
+   "movement_time_allowance": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "required_movement_angle": [
+    "float"
+   ],
+   "required_movement_radius": [
+    "float"
+   ]
+  },
+  "nav2_controller::PositionGoalChecker": {
+   "plugin": [
+    "str"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_controller::SimpleGoalChecker": {
+   "plugin": [
+    "str"
+   ],
+   "rot_stopped_velocity": [
+    "float"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ],
+   "yaw_goal_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_controller::SimpleProgressChecker": {
+   "movement_time_allowance": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "required_movement_angle": [
+    "float"
+   ],
+   "required_movement_radius": [
+    "float"
+   ]
+  },
+  "nav2_controller::StoppedGoalChecker": {
+   "plugin": [
+    "str"
+   ],
+   "rot_stopped_velocity": [
+    "float"
+   ],
+   "stateful": [
+    "bool"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "trans_stopped_velocity": [
+    "float"
+   ],
+   "xy_goal_tolerance": [
+    "float"
+   ],
+   "yaw_goal_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_costmap_2d::BinaryFilter": {
+   "binary_state_topic": [
+    "str"
+   ],
+   "default_state": [
+    "bool"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "filter_info_topic": [
+    "str"
+   ],
+   "flip_threshold": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_costmap_2d::DenoiseLayer": {
+   "enabled": [
+    "bool"
+   ],
+   "group_connectivity_type": [
+    "int"
+   ],
+   "minimal_group_size": [
+    "int"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_costmap_2d::InflationLayer": {
+   "cost_scaling_factor": [
+    "float"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "inflate_around_unknown": [
+    "bool"
+   ],
+   "inflate_unknown": [
+    "bool"
+   ],
+   "inflation_radius": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ]
+  },
+  "nav2_costmap_2d::KeepoutFilter": {
+   "enabled": [
+    "bool"
+   ],
+   "filter_info_topic": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_costmap_2d::ObstacleLayer": {
+   "combination_method": [
+    "int"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "footprint_clearing_enabled": [
+    "bool"
+   ],
+   "mark_threshold": [
+    "int"
+   ],
+   "max_obstacle_height": [
+    "float"
+   ],
+   "min_obstacle_height": [
+    "float"
+   ],
+   "observation_sources": [
+    "str"
+   ],
+   "origin_z": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "publish_voxel_map": [
+    "bool"
+   ],
+   "unknown_threshold": [
+    "int"
+   ],
+   "z_resolution": [
+    "float"
+   ],
+   "z_voxels": [
+    "int"
+   ]
+  },
+  "nav2_costmap_2d::RangeSensorLayer": {
+   "clear_on_max_reading": [
+    "bool"
+   ],
+   "clear_threshold": [
+    "float"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "inflate_cone": [
+    "float"
+   ],
+   "input_sensor_type": [
+    "str"
+   ],
+   "mark_threshold": [
+    "float"
+   ],
+   "no_readings_timeout": [
+    "float"
+   ],
+   "phi": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "topics": []
+  },
+  "nav2_costmap_2d::SpeedFilter": {
+   "enabled": [
+    "bool"
+   ],
+   "filter_info_topic": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "speed_limit_topic": [
+    "str"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_costmap_2d::StaticLayer": {
+   "enabled": [
+    "bool"
+   ],
+   "footprint_clearing_enabled": [
+    "bool"
+   ],
+   "map_subscribe_transient_local": [
+    "bool"
+   ],
+   "map_topic": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "subscribe_to_updates": [
+    "bool"
+   ],
+   "transform_tolerance": [
+    "float"
+   ]
+  },
+  "nav2_costmap_2d::VoxelLayer": {
+   "combination_method": [
+    "int"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "footprint_clearing_enabled": [
+    "bool"
+   ],
+   "mark_threshold": [
+    "int"
+   ],
+   "max_obstacle_height": [
+    "float"
+   ],
+   "min_obstacle_height": [
+    "float"
+   ],
+   "observation_sources": [
+    "str"
+   ],
+   "origin_z": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "publish_voxel_map": [
+    "bool"
+   ],
+   "unknown_threshold": [
+    "int"
+   ],
+   "z_resolution": [
+    "float"
+   ],
+   "z_voxels": [
+    "int"
+   ]
+  },
+  "nav2_graceful_controller::GracefulController": {
+   "allow_backward": [
+    "bool"
+   ],
+   "beta": [
+    "float"
+   ],
+   "final_rotation": [
+    "bool"
+   ],
+   "initial_rotation": [
+    "bool"
+   ],
+   "initial_rotation_min_angle": [
+    "float"
+   ],
+   "k_delta": [
+    "float"
+   ],
+   "k_phi": [
+    "float"
+   ],
+   "lambda": [
+    "float"
+   ],
+   "max_robot_pose_search_dist": [],
+   "motion_target_dist": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "rotation_scaling_factor": [
+    "float"
+   ],
+   "slowdown_radius": [
+    "float"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "v_angular_max": [
+    "float"
+   ],
+   "v_linear_max": [
+    "float"
+   ],
+   "v_linear_min": [
+    "float"
+   ]
+  },
+  "nav2_mppi_controller::MPPIController": {
+   "batch_size": [
+    "int"
+   ],
+   "critics": [
+    "list[str]"
+   ],
+   "enforce_path_inversion": [
+    "bool"
+   ],
+   "gamma": [
+    "float"
+   ],
+   "inversion_xy_tolerance": [
+    "float"
+   ],
+   "inversion_yaw_tolerance": [
+    "float"
+   ],
+   "iteration_count": [
+    "int"
+   ],
+   "max_robot_pose_search_dist": [],
+   "model_dt": [
+    "float"
+   ],
+   "motion_model": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "prune_distance": [
+    "float"
+   ],
+   "regenerate_noises": [
+    "bool"
+   ],
+   "reset_period": [
+    "float"
+   ],
+   "retry_attempt_limit": [
+    "int"
+   ],
+   "temperature": [
+    "float"
+   ],
+   "time_steps": [
+    "int"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ],
+   "vx_max": [
+    "float"
+   ],
+   "vx_min": [
+    "float"
+   ],
+   "vx_std": [
+    "float"
+   ],
+   "vy_max": [
+    "float"
+   ],
+   "vy_std": [
+    "float"
+   ],
+   "wz_max": [
+    "float"
+   ],
+   "wz_std": [
+    "float"
+   ]
+  },
+  "nav2_navfn_planner::NavfnPlanner": {
+   "allow_unknown": [
+    "bool"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "tolerance": [
+    "float"
+   ],
+   "use_astar": [
+    "bool"
+   ],
+   "use_final_approach_orientation": [
+    "bool"
+   ]
+  },
+  "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController": {
+   "allow_reversing": [
+    "bool"
+   ],
+   "approach_velocity_scaling_dist": [
+    "float"
+   ],
+   "cost_scaling_dist": [
+    "float"
+   ],
+   "cost_scaling_gain": [
+    "float"
+   ],
+   "desired_linear_vel": [
+    "float"
+   ],
+   "inflation_cost_scaling_factor": [
+    "float"
+   ],
+   "lookahead_dist": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "max_allowed_time_to_collision_up_to_carrot": [
+    "float"
+   ],
+   "max_angular_accel": [
+    "float"
+   ],
+   "max_lookahead_dist": [
+    "float"
+   ],
+   "max_robot_pose_search_dist": [],
+   "min_approach_linear_velocity": [
+    "float"
+   ],
+   "min_lookahead_dist": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "regulated_linear_scaling_min_radius": [
+    "float"
+   ],
+   "regulated_linear_scaling_min_speed": [
+    "float"
+   ],
+   "rotate_to_heading_angular_vel": [
+    "float"
+   ],
+   "rotate_to_heading_min_angle": [
+    "float"
+   ],
+   "transform_tolerance": [
+    "float"
+   ],
+   "use_collision_detection": [
+    "bool"
+   ],
+   "use_cost_regulated_linear_velocity_scaling": [
+    "bool"
+   ],
+   "use_interpolation": [
+    "bool"
+   ],
+   "use_regulated_linear_velocity_scaling": [
+    "bool"
+   ],
+   "use_rotate_to_heading": [
+    "bool"
+   ],
+   "use_velocity_scaled_lookahead_dist": [
+    "bool"
+   ]
+  },
+  "nav2_rotation_shim_controller::RotationShimController": {
+   "angular_disengage_threshold": [
+    "float"
+   ],
+   "angular_dist_threshold": [
+    "float"
+   ],
+   "closed_loop": [
+    "bool"
+   ],
+   "forward_sampling_distance": [
+    "float"
+   ],
+   "max_angular_accel": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "primary_controller": [
+    "str"
+   ],
+   "rotate_to_goal_heading": [
+    "bool"
+   ],
+   "rotate_to_heading_angular_vel": [
+    "float"
+   ],
+   "simulate_ahead_time": [
+    "float"
+   ]
+  },
+  "nav2_route::AdjustSpeedLimit": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "speed_limit_topic": [
+    "str"
+   ],
+   "speed_tag": [
+    "str"
+   ]
+  },
+  "nav2_route::CollisionMonitor": {
+   "check_resolution": [
+    "int"
+   ],
+   "costmap_topic": [
+    "str"
+   ],
+   "max_collision_dist": [
+    "float"
+   ],
+   "max_cost": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "rate": [
+    "float"
+   ],
+   "reroute_on_collision": [
+    "bool"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_route::CostmapScorer": {
+   "check_resolution": [
+    "int"
+   ],
+   "costmap_topic": [
+    "str"
+   ],
+   "invalid_off_map": [
+    "bool"
+   ],
+   "invalid_on_collision": [
+    "bool"
+   ],
+   "max_cost": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "use_maximum": [
+    "bool"
+   ],
+   "weight": [
+    "float"
+   ]
+  },
+  "nav2_route::DistanceScorer": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "speed_tag": [
+    "str"
+   ],
+   "weight": [
+    "float"
+   ]
+  },
+  "nav2_route::DynamicEdgesScorer": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_route::GeoJsonGraphFileLoader": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_route::GeoJsonGraphFileSaver": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_route::GoalOrientationScorer": {
+   "orientation_tolerance": [],
+   "orientation_weight": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "use_orientation_threshold": [
+    "bool"
+   ]
+  },
+  "nav2_route::PenaltyScorer": {
+   "penalty_tag": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "weight": [
+    "float"
+   ]
+  },
+  "nav2_route::ReroutingService": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_route::SemanticScorer": {
+   "plugin": [
+    "str"
+   ],
+   "semantic_classes": [
+    "list[str]"
+   ],
+   "semantic_key": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "weight": [
+    "float"
+   ]
+  },
+  "nav2_route::StartPoseOrientationScorer": {
+   "orientation_tolerance": [],
+   "orientation_weight": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "use_orientation_threshold": [
+    "bool"
+   ]
+  },
+  "nav2_route::TimeMarker": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "time_tag": [
+    "str"
+   ]
+  },
+  "nav2_route::TimeScorer": {
+   "max_vel": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ],
+   "speed_tag": [
+    "str"
+   ],
+   "time_tag": [
+    "str"
+   ],
+   "weight": [
+    "float"
+   ]
+  },
+  "nav2_route::TriggerEvent": {
+   "plugin": [
+    "str"
+   ],
+   "service_name": [
+    "str"
+   ]
+  },
+  "nav2_smac_planner::SmacPlanner2D": {
+   "allow_unknown": [
+    "bool"
+   ],
+   "cost_travel_multiplier": [
+    "float"
+   ],
+   "do_refinement": [
+    "bool"
+   ],
+   "downsample_costmap": [
+    "bool"
+   ],
+   "downsampling_factor": [
+    "int"
+   ],
+   "max_iterations": [
+    "int"
+   ],
+   "max_on_approach_iterations": [
+    "int"
+   ],
+   "max_planning_time": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "tolerance": [
+    "float"
+   ],
+   "use_final_approach_orientation": [
+    "bool"
+   ],
+   "w_data": [
+    "float"
+   ],
+   "w_smooth": [
+    "float"
+   ]
+  },
+  "nav2_smac_planner::SmacPlannerHybrid": {
+   "allow_unknown": [
+    "bool"
+   ],
+   "analytic_expansion_max_length": [
+    "float"
+   ],
+   "analytic_expansion_ratio": [
+    "float"
+   ],
+   "angle_quantization_bins": [
+    "int"
+   ],
+   "cache_obstacle_heuristic": [
+    "bool"
+   ],
+   "change_penalty": [
+    "float"
+   ],
+   "cost_penalty": [
+    "float"
+   ],
+   "do_refinement": [
+    "bool"
+   ],
+   "downsample_costmap": [
+    "bool"
+   ],
+   "downsampling_factor": [
+    "int"
+   ],
+   "lookup_table_size": [
+    "float"
+   ],
+   "max_iterations": [
+    "int"
+   ],
+   "max_on_approach_iterations": [
+    "int"
+   ],
+   "max_planning_time": [
+    "float"
+   ],
+   "minimum_turning_radius": [
+    "float"
+   ],
+   "motion_model_for_search": [
+    "str"
+   ],
+   "non_straight_penalty": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "retrospective_penalty": [
+    "float"
+   ],
+   "reverse_penalty": [
+    "float"
+   ],
+   "smooth_path": [
+    "bool"
+   ],
+   "tolerance": [
+    "float"
+   ],
+   "w_data": [
+    "float"
+   ],
+   "w_smooth": [
+    "float"
+   ]
+  },
+  "nav2_smac_planner::SmacPlannerLattice": {
+   "allow_reverse_expansion": [
+    "bool"
+   ],
+   "allow_unknown": [
+    "bool"
+   ],
+   "analytic_expansion_max_length": [
+    "float"
+   ],
+   "analytic_expansion_ratio": [
+    "float"
+   ],
+   "cache_obstacle_heuristic": [
+    "bool"
+   ],
+   "change_penalty": [
+    "float"
+   ],
+   "cost_penalty": [
+    "float"
+   ],
+   "do_refinement": [
+    "bool"
+   ],
+   "lattice_filepath": [],
+   "lookup_table_size": [
+    "float"
+   ],
+   "max_iterations": [
+    "int"
+   ],
+   "max_on_approach_iterations": [
+    "int"
+   ],
+   "max_planning_time": [
+    "float"
+   ],
+   "non_straight_penalty": [
+    "float"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "retrospective_penalty": [
+    "float"
+   ],
+   "reverse_penalty": [
+    "float"
+   ],
+   "rotation_penalty": [
+    "float"
+   ],
+   "smooth_path": [
+    "bool"
+   ],
+   "tolerance": [
+    "float"
+   ],
+   "w_data": [
+    "float"
+   ],
+   "w_smooth": [
+    "float"
+   ]
+  },
+  "nav2_smoother::SavitzkyGolaySmoother": {
+   "do_refinement": [
+    "bool"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "refinement_num": [
+    "int"
+   ]
+  },
+  "nav2_smoother::SimpleSmoother": {
+   "do_refinement": [
+    "bool"
+   ],
+   "max_its": [
+    "int"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "tolerance": [
+    "float"
+   ],
+   "w_data": [
+    "float"
+   ],
+   "w_smooth": [
+    "float"
+   ]
+  },
+  "nav2_theta_star_planner::ThetaStarPlanner": {
+   "allow_unknown": [
+    "bool"
+   ],
+   "how_many_corners": [
+    "int"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "use_final_approach_orientation": [
+    "bool"
+   ],
+   "w_euc_cost": [
+    "float"
+   ],
+   "w_traversal_cost": [
+    "float"
+   ]
+  },
+  "nav2_waypoint_follower::InputAtWaypoint": {
+   "enabled": [
+    "bool"
+   ],
+   "input_topic": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "timeout": [
+    "float"
+   ]
+  },
+  "nav2_waypoint_follower::PhotoAtWaypoint": {
+   "enabled": [
+    "bool"
+   ],
+   "image_format": [
+    "str"
+   ],
+   "image_topic": [
+    "str"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "save_dir": [
+    "str"
+   ]
+  },
+  "nav2_waypoint_follower::WaitAtWaypoint": {
+   "enabled": [
+    "bool"
+   ],
+   "plugin": [
+    "str"
+   ],
+   "waypoint_pause_duration": [
+    "int"
+   ]
+  }
+ },
+ "scopes": {
+  "node:amcl/initial_pose": {
+   "x": [
+    "float"
+   ],
+   "y": [
+    "float"
+   ],
+   "yaw": [
+    "float"
+   ],
+   "z": [
+    "float"
+   ]
+  },
+  "node:collision_detector/observation_sources": {
+   "enabled": [
+    "bool"
+   ],
+   "max_height": [
+    "float"
+   ],
+   "min_height": [
+    "float"
+   ],
+   "obstacles_angle": [],
+   "topic": [
+    "str"
+   ]
+  },
+  "node:collision_detector/polygons": {
+   "action_type": [
+    "str"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "footprint_topic": [
+    "str"
+   ],
+   "max_points": [
+    "int"
+   ],
+   "points": [
+    "list[float]"
+   ],
+   "polygon_pub_topic": [],
+   "radius": [
+    "float"
+   ],
+   "simulation_time_step": [
+    "float"
+   ],
+   "slowdown_ratio": [
+    "float"
+   ],
+   "time_before_collision": [
+    "float"
+   ],
+   "visualize": [
+    "bool"
+   ]
+  },
+  "node:collision_monitor/observation_sources": {
+   "enabled": [
+    "bool"
+   ],
+   "max_height": [
+    "float"
+   ],
+   "min_height": [
+    "float"
+   ],
+   "obstacles_angle": [],
+   "topic": [
+    "str"
+   ],
+   "type": [
+    "str"
+   ]
+  },
+  "node:collision_monitor/polygons": {
+   "action_type": [
+    "str"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "footprint_topic": [
+    "str"
+   ],
+   "max_points": [
+    "int"
+   ],
+   "points": [
+    "list[float]"
+   ],
+   "polygon_pub_topic": [],
+   "radius": [
+    "float"
+   ],
+   "simulation_time_step": [
+    "float"
+   ],
+   "slowdown_ratio": [
+    "float"
+   ],
+   "time_before_collision": [
+    "float"
+   ],
+   "type": [
+    "str"
+   ],
+   "visualize": [
+    "bool"
+   ]
+  },
+  "node:waypoint_follower/wait_at_waypoint": {
+   "plugin": [
+    "str"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/BaseObstacle": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/GoalAlign": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/GoalDist": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/ObstacleFootprint": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/Oscillation": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/PathAlign": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/PathDist": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/PreferForward": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/RotateToGoal": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:dwb_core::DWBLocalPlanner/Twirling": {
+   "aggregation_type": [
+    "str"
+   ],
+   "forward_point_distance": [
+    "float"
+   ],
+   "lookahead_time": [
+    "float"
+   ],
+   "oscillation_reset_angle": [
+    "float"
+   ],
+   "oscillation_reset_dist": [
+    "float"
+   ],
+   "oscillation_reset_time": [
+    "float"
+   ],
+   "penalty": [
+    "float"
+   ],
+   "scale": [
+    "float"
+   ],
+   "slowing_factor": [
+    "float"
+   ],
+   "strafe_theta": [
+    "float"
+   ],
+   "strafe_x": [
+    "float"
+   ],
+   "sum_scores": [
+    "bool"
+   ],
+   "theta_scale": [
+    "float"
+   ],
+   "x_only_threshold": [
+    "float"
+   ]
+  },
+  "plugin:nav2_costmap_2d::ObstacleLayer/observation_sources": {
+   "clearing": [
+    "bool"
+   ],
+   "data_type": [
+    "str"
+   ],
+   "expected_update_rate": [
+    "float"
+   ],
+   "inf_is_valid": [
+    "bool"
+   ],
+   "marking": [
+    "bool"
+   ],
+   "max_obstacle_height": [
+    "float"
+   ],
+   "min_obstacle_height": [
+    "float"
+   ],
+   "observation_persistence": [
+    "float"
+   ],
+   "obstacle_max_range": [
+    "float"
+   ],
+   "obstacle_min_range": [
+    "float"
+   ],
+   "raytrace_max_range": [
+    "float"
+   ],
+   "raytrace_min_range": [
+    "float"
+   ],
+   "sensor_frame": [
+    "str"
+   ],
+   "topic": []
+  },
+  "plugin:nav2_costmap_2d::VoxelLayer/observation_sources": {
+   "clearing": [
+    "bool"
+   ],
+   "data_type": [
+    "str"
+   ],
+   "expected_update_rate": [
+    "float"
+   ],
+   "inf_is_valid": [
+    "bool"
+   ],
+   "marking": [
+    "bool"
+   ],
+   "max_obstacle_height": [
+    "float"
+   ],
+   "min_obstacle_height": [
+    "float"
+   ],
+   "observation_persistence": [
+    "float"
+   ],
+   "obstacle_max_range": [
+    "float"
+   ],
+   "obstacle_min_range": [
+    "float"
+   ],
+   "raytrace_max_range": [
+    "float"
+   ],
+   "raytrace_min_range": [
+    "float"
+   ],
+   "sensor_frame": [
+    "str"
+   ],
+   "topic": []
+  },
+  "plugin:nav2_mppi_controller::MPPIController/AckermannConstraints": {
+   "min_turning_r": [
+    "float"
+   ]
+  },
+  "plugin:nav2_mppi_controller::MPPIController/TrajectoryVisualizer": {
+   "time_step": [
+    "int"
+   ],
+   "trajectory_step": [
+    "int"
+   ]
+  },
+  "plugin:nav2_mppi_controller::MPPIController/critics": {
+   "collision_cost": [
+    "float"
+   ],
+   "collision_margin_distance": [
+    "float"
+   ],
+   "consider_footprint": [
+    "bool"
+   ],
+   "cost_power": [
+    "int"
+   ],
+   "cost_scaling_factor": [
+    "float"
+   ],
+   "cost_weight": [
+    "float"
+   ],
+   "critical_cost": [
+    "float"
+   ],
+   "critical_weight": [
+    "float"
+   ],
+   "deadband_velocities": [
+    "list[float]"
+   ],
+   "enabled": [
+    "bool"
+   ],
+   "forward_preference": [
+    "bool"
+   ],
+   "inflation_layer_name": [
+    "str"
+   ],
+   "inflation_radius": [
+    "float"
+   ],
+   "max_angle_to_furthest": [
+    "float"
+   ],
+   "max_path_occupancy_ratio": [
+    "float"
+   ],
+   "near_goal_distance": [
+    "float"
+   ],
+   "offset_from_furthest": [
+    "int"
+   ],
+   "repulsion_weight": [
+    "float"
+   ],
+   "symmetric_yaw_tolerance": [
+    "bool"
+   ],
+   "threshold_to_consider": [
+    "float"
+   ],
+   "trajectory_point_step": [
+    "int"
+   ],
+   "use_path_orientations": [
+    "bool"
+   ]
+  }
+ }
+}

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nav2lint"
+version = "0.2.0"
+description = "Static checker for ROS 2 Nav2 parameter files"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+dependencies = ["PyYAML>=5.1"]
+keywords = ["ros2", "nav2", "navigation2", "lint", "yaml"]
+
+[project.scripts]
+nav2lint = "nav2lint.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nav2lint = ["refs/*.yaml", "data/*.json"]
