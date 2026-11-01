@@ -9,11 +9,15 @@ description = "Static checker for ROS 2 Nav2 parameter files"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
+authors = [{ name = "Leonhart999" }]
 dependencies = ["PyYAML>=5.1"]
 keywords = ["ros2", "nav2", "navigation2", "lint", "yaml"]
 
 [project.scripts]
 nav2lint = "nav2lint.cli:main"
+
+[project.urls]
+Repository = "https://github.com/Leonhart999/nav2lint"
 
 [tool.setuptools.packages.find]
 where = ["src"]

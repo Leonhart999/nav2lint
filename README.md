@@ -187,4 +187,6 @@ Use `main` for `rolling`. After regenerating, run `pytest`: the tests lint the o
 
 ## License
 
-Apache-2.0. The reference configs under `src/nav2lint/refs/` and the tables under `src/nav2lint/data/` are derived from [ros-navigation/navigation2](https://github.com/ros-navigation/navigation2) (Apache-2.0).
+Copyright 2026 Leonhart999. Licensed under the [Apache License 2.0](LICENSE).
+
+The reference configs under `src/nav2lint/refs/` and the tables under `src/nav2lint/data/` are derived from [ros-navigation/navigation2](https://github.com/ros-navigation/navigation2) (Apache-2.0); see [NOTICE](NOTICE).

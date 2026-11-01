@@ -1,0 +1,10 @@
+nav2lint
+Copyright 2026 Leonhart999
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The reference configurations in src/nav2lint/refs/ are copies of
+nav2_bringup/params/nav2_params.yaml, and the parameter tables in
+src/nav2lint/data/ are derived from the C++ sources, of the navigation2
+project (https://github.com/ros-navigation/navigation2), which is licensed
+under the Apache License, Version 2.0.
