@@ -1,0 +1,12 @@
+- id: nav2lint
+  name: Check Nav2 parameter files
+  description: Discover and lint Nav2 configurations in the repository without modifying files.
+  entry: nav2lint
+  language: python
+  types: [file]
+  files: '\.ya?ml$'
+  exclude: '(^|/)\.nav2lint\.ya?ml$'
+  # Explicit file arguments also lint map YAMLs. Directory discovery filters for
+  # Nav2 nodes instead; the trade-off is checking the whole repo on YAML changes.
+  pass_filenames: false
+  args: [.]

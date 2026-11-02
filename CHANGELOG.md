@@ -2,6 +2,24 @@
 
 All notable changes to nav2lint are documented here.
 
+## [0.3.0] - 2026-11-02
+
+### Added
+
+- `--explain RULE` with check descriptions, review guidance, and automatic-fix boundaries for every rule.
+- `--describe NODE.PARAMETER --distro DISTRO` and explicit plugin/group parameter queries, with source-table, reference-YAML, and built-in convention evidence.
+- Structured `evidence` for E102 and T404 JSON diagnostics, including source snapshot commits, known/unknown types, and explicit incomplete-table status.
+- `--init-vscode [WORKSPACE]` with configurable Python commands and safe merging of existing VS Code tasks, without machine-specific repository paths or automatic task execution.
+- A pre-commit hook for checking Nav2 configurations without passing unrelated YAML files as explicit inputs.
+- Windows/Linux CI, isolated wheel smoke checks, and focused source-extractor regression fixtures.
+
+### Changed
+
+- T404 now reports absence from bundled tables rather than claiming that Nav2 necessarily ignores the parameter. T403 spelling advice is also explicitly tentative.
+- Portable VS Code tasks start manually by default. Existing custom tasks are preserved by initialization.
+- Initialization output now explains workspace selection, preserved interpreter/automatic-run settings, and Python installation requirements.
+- Document missing-task troubleshooting, WSL UNC watcher limitations and a local workspace-file workaround; replace the editor quick-start placeholder with the current workspace directory.
+
 ## [0.2.1] - 2026-11-02
 
 ### Fixed
@@ -34,5 +52,6 @@ Initial tagged public release, based on commit `918bcdc`.
 - A Python API, an English README, and a Chinese user guide.
 - Apache-2.0 license, copyright notice, and author metadata for Leonhart999.
 
+[0.3.0]: https://github.com/Leonhart999/nav2lint/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/Leonhart999/nav2lint/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Leonhart999/nav2lint/tree/v0.2.0

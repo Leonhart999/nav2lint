@@ -2,7 +2,7 @@
 
 nav2lint 是 ROS 2 Nav2 参数文件（`nav2_params.yaml`）的静态检查工具。它在启动 Nav2 之前读一遍 YAML，找出会导致启动失败、参数被悄悄忽略、或者导航表现异常的写法，并给出行号和修改建议。
 
-它不依赖 ROS，不会启动任何节点，也不会修改你的文件。
+它不依赖 ROS，不会启动任何节点。普通检查和查询不修改文件；`--fix` 会修改参数文件，`--init-vscode` 会创建或合并任务配置。
 
 ---
 
@@ -84,6 +84,10 @@ nav2lint [选项] 文件或目录 [文件或目录 ...]
 | `--config 文件` | 使用指定的配置文件，不再向上查找 `.nav2lint.yaml` |
 | `--no-config` | 忽略所有 `.nav2lint.yaml` |
 | `--version` | 显示版本号 |
+| `--explain 规则` | 解释检查依据、处理建议和自动修复边界，不需要输入文件 |
+| `--describe 参数 --distro 发行版` | 查询参数类型、来源与已知局限，必须明确指定发行版 |
+| `--init-vscode [工作区]` | 创建或安全合并 VS Code 任务；省略工作区时使用当前目录 |
+| `--python 可执行文件` | 指定初始化任务使用的 Python 命令，只能与 `--init-vscode` 一起使用 |
 
 一次可以检查多个文件，也可以直接给一个目录：
 
@@ -345,7 +349,7 @@ my_checker:
 
 **T403 参数名拼错（第三方插件）**：Nav2 参数表里没有的节点或插件（比如第三方控制器），只能靠拼写判断。只有参数名里出现了**不认识的单词**时才会报，比如 `inflation_raduis`；`min_vel_theta` 这种每个词都认识的不会报。
 
-**T404 Nav2 没有声明这个参数（warning）**：对官方节点和内置插件，工具有完整的参数表（从 Nav2 源码提取）。不在表里的参数，Nav2 不会读取，写了也没用。常见原因：
+**T404 参数未被当前参数表收录（warning）**：对已知节点和内置插件，工具结合源码提取表与官方参考配置检查参数。参数表并不保证完整，**未收录不等于 Nav2 一定不会读取**。应核对发行版、插件类型和源码。常见原因：
 - 拼错了，提示里会给出最接近的参数名；
 - 参数属于别的版本，提示里会写 “exists in kilted, rolling” 这样的说明；
 - 参数写在了错误的插件下面。例如 linorobot2 的配置里，RotationShim 的参数因为 `plugin` 重复被留在了 DWB 下面，这些参数会被逐条报出来。
@@ -360,23 +364,41 @@ bt_navigator:
 
 ## 7. 在 VS Code 里显示
 
-不用装任何扩展。项目里的 [editors/vscode/tasks.json](../editors/vscode/tasks.json) 是 VS Code 的任务配置，复制到工作区的 `.vscode/tasks.json` 就能用。你的 `~/ros2_ws/.vscode/tasks.json` 已经放好了。
+不需要专用扩展。v0.3.0 可以直接生成任务，不再要求手改固定的 D 盘路径：
 
-效果：写错参数的那一行下面会出现波浪线，鼠标悬停能看到问题描述和修改建议；按 `Ctrl+Shift+M` 打开“问题”面板，能看到全部结果，点一条就跳到对应行。
+```bash
+cd ~/ros2_ws
+nav2lint --init-vscode .
+```
 
-配置里有两个任务：
+如果所用的 WSL Python 已安装 nav2lint，也可以明确指定解释器：
 
-- **nav2lint: watch workspace**：打开文件夹时自动启动，在后台检查工作区里的所有 Nav2 参数文件，**每次保存后自动重新检查**。第一次打开时，VS Code 会在右下角询问是否允许这个文件夹里的自动任务，选允许。要手动启动的话，在命令面板（`Ctrl+Shift+P`）里执行 “Tasks: Run Task”。
-- **nav2lint: check current file**：只检查当前打开的文件，运行一次，同样从 “Tasks: Run Task” 里选。
+```bash
+python3 -m nav2lint --init-vscode . --python python3
+```
 
-WSL 里的工作区有两种打开方式，这份配置都支持：
+默认使用运行 nav2lint 的当前 Python；指定 `--python` 时，用户需确保该命令能导入 nav2lint。工具不会执行指定命令，也不会替它安装依赖。通过 `PYTHONPATH` 临时运行源码的用户，建议先在任务使用的环境中 `pip install -e /path/to/nav2lint`，因为任务不会自动继承此次临时设置的 `PYTHONPATH`。
 
-1. 在 Windows 的 VS Code 里“打开文件夹”，路径填 `\\wsl.localhost\Ubuntu-22.04\home\leonhart\ros2_ws`。这时任务用的是 Windows 上的 `D:\projects\nav2lint\.venv`。我试过，每秒扫描一次整个 `ros2_ws` 大约需要 0.13 秒。
-2. 安装 WSL 扩展后，用 Remote-WSL 窗口打开（或者在 WSL 里执行 `code ~/ros2_ws`）。这时任务用的是 WSL 里的 `python3`。
+初始化仅补入缺少的任务，不覆盖已有同名任务，不自动运行任务，也不自动启用打开文件夹时执行。支持带注释和尾随逗号的 JSONC，合并保留已有文本、注释和换行。遇到坏格式、重复 JSON key 等不能安全处理的情况，会报错且保留原文件。已有旧版任务（包括固定路径和自动启动设置）会保留；如需换成新版，先备份后移除旧的两个 nav2lint 任务，再初始化。
 
-需要改的地方：发行版写在工作区根目录的 `.nav2lint.yaml` 里（`distro: humble`），你的 `~/ros2_ws/.nav2lint.yaml` 也已经放好了；如果 nav2lint 不在 `D:\projects\nav2lint`，就改 tasks.json 里 `command` 和 `PYTHONPATH` 的路径。改了 `.nav2lint.yaml` 之后，watch 任务会自动按新设置重新检查。
+两个任务均从命令面板的 “Tasks: Run Task” 手动启动：
 
-不想让它一直在后台运行的话，删掉 watch 任务里 `"runOptions"` 那一行，它就不会自动启动了。
+- **nav2lint: watch workspace**：运行期间持续检查工作区，保存参数文件后重新检查。
+- **nav2lint: check current file**：检查当前文件一次。
+
+problem matcher 将诊断送入 VS Code 的“问题”面板。发行版仍写在工作区根目录的 `.nav2lint.yaml` 中，例如 `distro: humble`。本轮验证覆盖任务内容、输出匹配和初始化行为，未人工观察编辑器波浪线界面。
+
+Windows VS Code 窗口应使用 Windows Python；Remote-WSL 窗口应在 WSL 中初始化并使用 WSL Python。默认生成的解释器绝对路径适用于当前环境；换机器后可重新初始化，或明确选择各机器 PATH 上可用的 Python 命令。进程任务不会自动采用 Python 扩展选中的解释器。
+
+[editors/vscode/tasks.json](../editors/vscode/tasks.json) 仍可作为手动复制的通用模板，使用前确认其中的 Python 命令正确。
+
+### 7.1 任务列表为空时
+
+- 打开的是包含 `.vscode/tasks.json` 的工作区根文件夹，而不是单个 YAML 或下级目录；任务名不是独立的命令面板命令，要先选择“任务: 运行任务”，必要时点“显示所有任务”。
+- 确认工作区信任状态。配置从外部修改后，可先保存工作，再执行 “Developer: Reload Window”。
+- Windows VS Code 通过 WSL UNC 共享路径打开目录时，本机曾出现文件监听错误；日志只能证明监听异常，不能认定所有任务缺失都由它造成。可用 Remote-WSL，或创建保存在 Windows 本地的 `.code-workspace` 文件，在其中放入 WSL 文件夹 URI 及工作区级 `tasks`，再打开该工作区。
+- 本机实际验证可见任务的入口是 `D:\projects\nav2lint_data\ros2-nav2lint.code-workspace`。它是个人环境配置，不随开源仓库发布，也不修改导航参数。
+- `/path/to/...` 是通用示例的占位符，必须替换为实际路径；不应复制它去创建根目录，也不需要用 sudo 绕过权限。Ubuntu 默认命令通常是 `python3`，不是 `python`。
 
 ## 8. 自动修复（--fix）
 
@@ -478,7 +500,44 @@ new_text, n_fixed, remaining = fix_text(open("nav2_params.yaml", encoding="utf-8
 
 ---
 
-## 12. 常见问题
+## 12. 规则解释与参数来源查询（v0.3.0）
+
+```bash
+nav2lint --explain T404
+nav2lint --describe controller_server.controller_frequency --distro humble
+nav2lint --describe plugin:nav2_costmap_2d::InflationLayer.inflation_radius --distro jazzy
+nav2lint --describe plugin:dwb_core::DWBLocalPlanner/PathAlign.scale --distro humble
+nav2lint --describe amcl.initial_pose.x --distro humble --format json
+```
+
+这些命令不需要参数文件。查询只支持 text 和 json，不与文件检查、修复或 watch 模式组合。
+
+- `--explain` 说明规则检查什么、应如何处理、哪些情况可以自动修复。
+- `--describe` 必须明确指定发行版，不从当前目录的配置自动读取。插件使用 `plugin:包名::类名/分组.参数`，不能仅凭实例名 `FollowPath` 推断插件类型。
+- `source_table` 表示源码提取表，包含 Nav2 commit 和数据文件路径；`source_table_global` 表示继承的全局声明；`reference_yaml` 表示官方参考配置；`built_in_convention` 表示内建 rclcpp 参数约定。
+- `known` 表示有记录，不保证类型已知；`not_in_tables` 表示该作用域有表但没找到参数；`unknown_scope` 表示作用域没有表。`type_known` 单独说明是否知道类型，`scope_complete` 当前均为 false。
+- 已提取的数据未记录逐参数 C++ 文件和行号，不能据此跳转到具体声明行。
+- 查询成功返回 0，即使参数未收录；规则 ID、语法或发行版错误返回 2。
+
+JSON 诊断为 E102 和 T404 增加 `evidence` 列表，给出参数的已知类型和来源；其他规则目前列表为空，可用 `--explain` 查规则解释。它不提供未经校准的“置信度百分比”。
+
+## 13. pre-commit 与自动测试
+
+v0.3.0 发布后，其他仓库可配置：
+
+```yaml
+repos:
+  - repo: https://github.com/Leonhart999/nav2lint
+    rev: v0.3.0
+    hooks:
+      - id: nav2lint
+```
+
+hook 不自动修复；相关 YAML 改动触发后扫描整个工作树中的 Nav2 参数文件，而不是把地图等所有 YAML 都当作参数文件。它可能报告尚未暂存的修改或已有问题。发行版在 `.nav2lint.yaml` 设置，想让 warning 也阻止提交，可添加 `args: [., --strict]`。远端必须已有 v0.3.0 标签才能使用上述 rev；本地开发完成不代表已经公开发布。
+
+仓库新增 Windows/Linux 多 Python 版本的 CI、wheel 安装验证和提取器小型回归样例。CI 文件存在不代表已经在 GitHub 跑过，发布时应以实际 Actions 结果为准。
+
+## 14. 常见问题
 
 **Q：为什么官方配置也报了一条 info？**
 官方 local_costmap 里定义了 `static_layer`，但它没在 `plugins` 列表里（局部代价地图通常不需要静态层）。这条 P103 是事实描述，不需要改。

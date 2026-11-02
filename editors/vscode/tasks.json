@@ -2,22 +2,22 @@
   // nav2lint tasks for VS Code. Copy this file to <your workspace>/.vscode/tasks.json.
   //
   // - "nav2lint: check current file": run from the Command Palette (Tasks: Run Task) or bind a key.
-  // - "nav2lint: watch workspace": starts when the folder opens and re-checks every Nav2 parameter
-  //   file under the workspace on each save. VS Code asks once whether to allow automatic tasks.
+  // - "nav2lint: watch workspace": start manually with Tasks: Run Task to re-check Nav2 parameter
+  //   files after changes. Automatic folder-open tasks are not enabled; opt in explicitly if wanted.
   //
+  // Install nav2lint in the Python environment used by "python" on PATH, or change both commands
+  // to that environment's Python executable (use "python3" if needed on your platform).
+  // A process task does not automatically use the Python extension's selected interpreter or
+  // python.defaultInterpreterPath setting. Use an explicit executable to select an environment.
   // Findings appear as squiggles in the YAML and in the Problems panel (Ctrl+Shift+M).
-  // Set your ROS 2 distro in a .nav2lint.yaml at the workspace root (`distro: humble`), and change
-  // the paths below if nav2lint does not live in D:/projects/nav2lint.
+  // Set your ROS 2 distro in a .nav2lint.yaml at the workspace root (`distro: humble`).
   "version": "2.0.0",
   "tasks": [
     {
       "label": "nav2lint: check current file",
       "type": "process",
-      "windows": { "command": "D:/projects/nav2lint/.venv/Scripts/python.exe" },
-      "linux": {
-        "command": "python3",
-        "options": { "env": { "PYTHONPATH": "/mnt/d/projects/nav2lint/src" } }
-      },
+      "command": "python",
+      "options": { "cwd": "${workspaceFolder}" },
       "args": ["-m", "nav2lint", "--format", "line", "${file}"],
       "presentation": { "reveal": "silent", "clear": true },
       "problemMatcher": {
@@ -37,14 +37,10 @@
     {
       "label": "nav2lint: watch workspace",
       "type": "process",
-      "windows": { "command": "D:/projects/nav2lint/.venv/Scripts/python.exe" },
-      "linux": {
-        "command": "python3",
-        "options": { "env": { "PYTHONPATH": "/mnt/d/projects/nav2lint/src" } }
-      },
+      "command": "python",
+      "options": { "cwd": "${workspaceFolder}" },
       "args": ["-m", "nav2lint", "--watch", "--format", "line", "${workspaceFolder}"],
       "isBackground": true,
-      "runOptions": { "runOn": "folderOpen" },
       "presentation": { "reveal": "never" },
       "problemMatcher": {
         "owner": "nav2lint",

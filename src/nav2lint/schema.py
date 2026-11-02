@@ -231,8 +231,16 @@ class Declared:
 
 
 @lru_cache(maxsize=None)
+def source_data(distro: str) -> dict:
+    """Read the bundled snapshot without importing or executing external code."""
+    if distro not in DISTROS:
+        raise ValueError(f"Unsupported distro: {distro}")
+    return json.loads(resources.files("nav2lint").joinpath("data", f"{distro}.json").read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=None)
 def declared(distro: str) -> Declared:
-    raw = json.loads(resources.files("nav2lint").joinpath("data", f"{distro}.json").read_text(encoding="utf-8"))
+    raw = source_data(distro)
     common = {k: set(v) for k, v in raw["global"].items()} | RCLCPP_PARAMS
     tables: dict[str, dict[str, set[str]]] = {}
     for name, params in raw["nodes"].items():
@@ -242,6 +250,42 @@ def declared(distro: str) -> Declared:
     for name, params in raw["scopes"].items():
         tables.setdefault(name, {}).update({k: set(v) for k, v in params.items()})
     return Declared(tables, raw.get("nav2_commit", ""))
+
+
+def parameter_info(distro: str, schema: str, key: str) -> dict:
+    """Describe available evidence; no bundled scope is claimed to be complete."""
+    raw = source_data(distro)
+    source = declared(distro).tables.get(schema)
+    ref = reference(distro).types.get(schema)
+    sources = []
+    if source is not None and key in source:
+        types = sorted(source[key])
+        if schema.startswith("node:") and key in RCLCPP_PARAMS:
+            kind = "built_in_convention"
+            types = sorted(RCLCPP_PARAMS[key])
+        else:
+            kind = "source_table"
+            # Global lifecycle declarations are merged into each extracted node.
+            if schema.startswith("node:") and key in raw["global"]:
+                kind = "source_table_global"
+        entry = {"kind": kind, "types": types}
+        if kind != "built_in_convention":
+            entry.update({"nav2_commit": raw.get("nav2_commit", ""), "artifact": f"data/{distro}.json"})
+        sources.append(entry)
+    if ref is not None and key in ref:
+        sources.append({"kind": "reference_yaml", "types": sorted(ref[key]), "artifact": f"refs/{distro}.yaml"})
+    types = sorted({t for source in sources for t in source["types"]})
+    known_scope = source is not None or ref is not None
+    # A source-only empty type list is distinct from a parameter absent from the tables.
+    return {
+        "distro": distro, "schema": schema, "parameter": key,
+        "status": "known" if sources else "not_in_tables" if known_scope else "unknown_scope",
+        "types": types, "type_known": bool(types), "scope_complete": False,
+        "sources": sources,
+        "other_distros": [d for d in DISTROS if d != distro and
+                           (key in declared(d).tables.get(schema, {}) or key in reference(d).types.get(schema, {}))],
+        "limitation": "Bundled tables are static approximations. Absence does not prove that Nav2 ignores a parameter.",
+    }
 
 
 @lru_cache(maxsize=None)

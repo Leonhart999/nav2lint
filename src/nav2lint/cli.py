@@ -105,7 +105,8 @@ def _print_json(results: list[Result]) -> None:
             "distro_reason": r.distro_reason,
             "suppressed": r.suppressed,
             "findings": [
-                {"rule": f.rule, "severity": f.severity, "line": f.line, "message": f.message, "hint": f.hint, "fixable": f.fix is not None}
+                {"rule": f.rule, "severity": f.severity, "line": f.line, "message": f.message, "hint": f.hint,
+                 "fixable": f.fix is not None, "evidence": f.evidence}
                 for f in r.findings
             ],
         }
@@ -211,7 +212,12 @@ def _watch(args) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="nav2lint", description="Static checker for Nav2 parameter files")
-    ap.add_argument("paths", nargs="+", metavar="PATH", help="Nav2 parameter YAML files, or directories to search for them")
+    ap.add_argument("paths", nargs="*", metavar="PATH", help="Nav2 parameter YAML files, or directories to search for them")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--explain", metavar="RULE", help="explain a rule without checking files")
+    mode.add_argument("--describe", metavar="PARAMETER", help="query NODE.PARAMETER or plugin:PACKAGE::CLASS.PARAMETER (requires --distro)")
+    mode.add_argument("--init-vscode", nargs="?", const=".", metavar="WORKSPACE", help="safely merge VS Code tasks into a workspace (default: current directory)")
+    ap.add_argument("--python", metavar="EXECUTABLE", help="Python command for --init-vscode (default: current interpreter)")
     ap.add_argument("--distro", choices=["auto", *DISTROS], help="target ROS 2 distro (default: from .nav2lint.yaml, else auto-detect)")
     ap.add_argument("--format", default="text", choices=["text", "json", "line"], help="line: one finding per line, hint inline")
     ap.add_argument("--strict", action="store_true", help="exit non-zero on warnings too")
@@ -228,6 +234,47 @@ def main(argv: list[str] | None = None) -> int:
 
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+    if args.explain is not None or args.describe is not None or args.init_vscode is not None:
+        if args.paths or args.watch or args.fix or args.diff or args.config or args.no_config or args.strict or args.info:
+            ap.error("query and initialization modes cannot be combined with file-checking arguments")
+        if args.python is not None and args.init_vscode is None:
+            ap.error("--python requires --init-vscode")
+        if args.format == "line":
+            ap.error("query and initialization modes support --format text or json, not line")
+        try:
+            if args.init_vscode is not None:
+                from .vscode import init_vscode
+                path = init_vscode(Path(args.init_vscode), python=args.python)
+                data = {"tasks_file": str(path)}
+            else:
+                from .explain import describe_parameter, explain_rule
+                data = explain_rule(args.explain) if args.explain is not None else describe_parameter(args.describe, args.distro)
+        except (ValueError, OSError) as e:
+            print(f"nav2lint: {e}", file=sys.stderr)
+            return 2
+        if args.format == "json":
+            print(json.dumps(data, ensure_ascii=False, indent=2))
+        elif args.explain:
+            print(f"{data['rule']}: {data['title']}\n\nChecks: {data['check']}\nAction: {data['action']}\nAutomatic fix: {data['automatic_fix']}")
+        elif args.describe:
+            print(f"{data['schema']}.{data['parameter']} ({data['distro']})")
+            print(f"Status: {data['status']}; types: {', '.join(data['types']) or 'unknown'}")
+            for source in data['sources']:
+                detail = source.get('nav2_commit') or source.get('artifact', '')
+                print(f"  {source['kind']}: {', '.join(source['types']) or 'type unknown'} {detail}".rstrip())
+            if data['other_distros']:
+                print(f"Also recorded in: {', '.join(data['other_distros'])}")
+            print(data['limitation'])
+        else:
+            print(f"VS Code tasks ready: {data['tasks_file']}")
+            print("Existing tasks are preserved, including their interpreter and automatic-run settings.")
+            print("New tasks start manually. Open this workspace folder in VS Code, then use Tasks: Run Task.")
+            print("Tasks need nav2lint installed in their Python environment; a temporary PYTHONPATH may not be inherited.")
+        return 0
+    if args.python is not None:
+        ap.error("--python requires --init-vscode")
+    if not args.paths:
+        ap.error("provide PATH, --explain, --describe, or --init-vscode")
     if args.watch and (args.fix or args.diff):
         ap.error("--watch cannot be combined with --fix or --diff")
     if args.watch:

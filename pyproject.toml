@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nav2lint"
-version = "0.2.1"
+version = "0.3.0"
 description = "Static checker for ROS 2 Nav2 parameter files"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -12,6 +12,9 @@ license = { text = "Apache-2.0" }
 authors = [{ name = "Leonhart999" }]
 dependencies = ["PyYAML>=5.1"]
 keywords = ["ros2", "nav2", "navigation2", "lint", "yaml"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "build>=1.2", "setuptools>=61", "wheel"]
 
 [project.scripts]
 nav2lint = "nav2lint.cli:main"

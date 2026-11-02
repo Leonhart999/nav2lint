@@ -23,6 +23,7 @@ from .schema import (
     declared_union,
     is_placeholder,
     normalize_plugin,
+    parameter_info,
     reference,
     registry_names,
     ros_type,
@@ -52,6 +53,7 @@ class Finding:
     message: str
     hint: str = ""
     fix: Fix | None = None
+    evidence: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -63,8 +65,9 @@ class Context:
     lines: list[str] = field(default_factory=list)  # source lines without line endings
     findings: list[Finding] = field(default_factory=list)
 
-    def add(self, rule: str, severity: str, line: int, message: str, hint: str = "", fix: Fix | None = None) -> None:
-        self.findings.append(Finding(rule, severity, line, message, hint, fix))
+    def add(self, rule: str, severity: str, line: int, message: str, hint: str = "", fix: Fix | None = None,
+            evidence: list[dict] | None = None) -> None:
+        self.findings.append(Finding(rule, severity, line, message, hint, fix, evidence or []))
 
     def at_least(self, distro: str) -> bool:
         return self.distro is not None and DISTROS.index(self.distro) >= DISTROS.index(distro)
@@ -317,6 +320,15 @@ def lookup(ctx: Context, scope: Scope, key: str) -> tuple[dict[str, set[str]] | 
     return table, leaf
 
 
+def parameter_evidence(ctx: Context, scope: Scope, key: str) -> list[dict]:
+    schema, leaf = split_key(scope, key)
+    schemas = [schema]
+    if scope.extra_schema and "." not in key:
+        schemas.append(scope.extra_schema)
+    evidence = [parameter_info(d, sch, leaf) for d in ([ctx.distro] if ctx.distro else DISTROS) for sch in schemas]
+    return [e for e in evidence if e["status"] != "unknown_scope"]
+
+
 def _expected(ctx: Context, scope: Scope, key: str) -> set[str] | None:
     if scope.node in COSTMAPS and scope.path == "" and key == "footprint":
         return {"str"}  # Nav2 footprint is a string "[[x, y], ...]"
@@ -365,6 +377,7 @@ def check_types(ctx: Context) -> None:
                 f"`{sc.full(k)}` should be {fmt_types(exp)} but is {t}; Nav2 will fail with a parameter type mismatch",
                 hint,
                 fix,
+                parameter_evidence(ctx, sc, k),
             )
 
 
@@ -769,7 +782,9 @@ def check_spelling(ctx: Context) -> None:
                 others = [d for d in DISTROS if d != ctx.distro and leaf in (declared(d).tables.get(schema) or {})]
                 if others:
                     hint = f"`{leaf}` exists in {', '.join(others)}" + (f"; {hint}" if hint else "")
-                ctx.add("T404", WARNING, line, f"`{sc.full(k)}` is not a parameter Nav2 declares here ({where}); it is ignored", hint)
+                hint += ("; " if hint else "") + "tables may be incomplete; verify the target distro and plugin documentation"
+                ctx.add("T404", WARNING, line, f"`{sc.full(k)}` is not in the bundled parameter tables for this scope ({where})",
+                        hint, evidence=parameter_evidence(ctx, sc, k))
                 continue
             # Scope unknown to the Nav2 tables (third-party plugin): only flag likely typos.
             known = set(ref.types.get(sc.schema, {}))
@@ -777,7 +792,7 @@ def check_spelling(ctx: Context) -> None:
                 continue
             m = close(k, known)
             if m:
-                ctx.add("T403", WARNING, line, f"`{sc.full(k)}` is not a known parameter; Nav2 will ignore it", f"did you mean `{m}`?")
+                ctx.add("T403", WARNING, line, f"`{sc.full(k)}` may be misspelled; verify the plugin's parameter documentation", f"did you mean `{m}`?")
 
 
 ALL_CHECKS = [check_structure, check_types, check_registries, check_migration, check_sanity, check_spelling]

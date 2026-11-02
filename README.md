@@ -37,6 +37,22 @@ For a directory, nav2lint picks the YAML files that have a `ros__parameters` sec
 
 Exit codes: 0 when there are no errors, 1 when there are errors (or warnings with `--strict`), 2 when a file cannot be read or a config file is invalid.
 
+## Explain rules and parameter evidence
+
+```bash
+nav2lint --explain T404
+nav2lint --describe controller_server.controller_frequency --distro humble
+nav2lint --describe plugin:nav2_costmap_2d::InflationLayer.inflation_radius --distro jazzy
+nav2lint --describe plugin:dwb_core::DWBLocalPlanner/PathAlign.scale --distro humble
+nav2lint --describe amcl.initial_pose.x --distro humble --format json
+```
+
+Queries require no input files and support text or JSON output. `--describe` requires an explicit supported `--distro`; it does not infer the target from the current directory's configuration. Plugin queries use `::` for the class separator and `/` for child groups. Querying a plugin instance such as `controller_server.FollowPath.max_vel_x` cannot infer its class without a file; use the explicit plugin class instead.
+
+Evidence distinguishes extracted source tables, official reference YAML, and built-in rclcpp conventions. Extracted entries identify the bundled Nav2 commit and data artifact; per-parameter C++ source locations are not currently recorded. A known parameter with an unknown type is different from one absent from the tables. No bundled scope is claimed to be complete, and absence does **not** prove that Nav2 ignores a parameter.
+
+E102 and T404 findings include an additive `evidence` array in JSON output. Other rules currently leave it empty; their rationale is available through `--explain`. A successful query exits 0 even for `not_in_tables` or `unknown_scope`; malformed queries and unknown rule IDs exit 2.
+
 ## Automatic fixes
 
 `--fix` applies the fixes whose correct form is unambiguous and leaves the rest for you. It edits only the affected lines, so comments, ordering and line endings stay as they were. Run `--diff` first to review.
@@ -85,12 +101,40 @@ Rule IDs are separated by commas; text after them is ignored, so you can give a 
 
 ## VS Code
 
-[editors/vscode/tasks.json](editors/vscode/tasks.json) shows findings as squiggles in the YAML and in the Problems panel, without any extension. Copy it to `<workspace>/.vscode/tasks.json`, put `distro: <your distro>` in a `.nav2lint.yaml` at the workspace root, and adjust the nav2lint paths in the tasks file if needed.
+Generate tasks using the Python environment that has nav2lint installed:
 
-- **nav2lint: watch workspace** starts when the folder opens (VS Code asks once to allow automatic tasks) and re-checks every Nav2 parameter file on each save.
-- **nav2lint: check current file** checks the open file once (Command Palette, *Tasks: Run Task*).
+```bash
+# Run from the root of the workspace you want VS Code to open.
+nav2lint --init-vscode .
+# On Linux/WSL, optionally select a Python command explicitly.
+nav2lint --init-vscode . --python python3
+```
 
-The file has both a `windows` and a `linux` command, so it works in a Windows window (including WSL folders opened as `\\wsl.localhost\...`) and in a Remote-WSL window.
+The default uses the current interpreter. `--python` selects a command explicitly; it does not install nav2lint or validate that environment. For Remote-WSL, initialize from WSL using a WSL Python with nav2lint installed. For a Windows VS Code window, use a Windows interpreter. Generated absolute interpreter paths are environment-specific; regenerate for a new machine, or choose a portable command available on its PATH.
+
+Initialization merges missing nav2lint tasks into `.vscode/tasks.json`, preserves existing tasks (including custom tasks with the same labels), and refuses unsafe or malformed input without changing the file. Supported JSONC comments and trailing commas are accepted; insertion preserves the existing text, comments, BOM, and line endings. Both tasks start manually from *Tasks: Run Task*; initialization never runs a task or opts into folder-open execution.
+
+- **nav2lint: watch workspace** re-checks Nav2 parameter files while the task runs.
+- **nav2lint: check current file** checks the open file once.
+
+The problem matcher routes findings to VS Code's Problems panel. Set `distro: <your distro>` in a workspace `.nav2lint.yaml`. [editors/vscode/tasks.json](editors/vscode/tasks.json) is a portable manual-copy alternative; adjust its Python command for the environment.
+
+### Tasks missing from the task picker
+
+1. Open the **workspace root folder** in VS Code, not just a YAML file or a subfolder. Run *Tasks: Run Task*, then *Show All Tasks* if needed. Task labels are not standalone Command Palette commands.
+2. Trust the workspace only if you recognize its contents. If the task file changed externally, reload the VS Code window after saving your work.
+3. Existing same-label tasks are intentionally not upgraded. Review their `command` and platform overrides; new generated tasks always have a top-level `command`.
+4. Windows VS Code accessing a WSL folder via a UNC share may report file-watcher errors. This does not prove the cause of every missing task. Prefer Remote-WSL, or use a local `.code-workspace` file containing the WSL folder URI and a workspace-level `tasks` object copied from the template. Open that workspace file and select a Windows interpreter when using Windows VS Code.
+5. Use `python3`, not `python`, on systems where only Python 3 is available. If you ran the CLI with a temporary `PYTHONPATH`, install nav2lint in the task's environment first, or explicitly configure its environment. Do not use `sudo` just to initialize editor tasks.
+
+For example, in a WSL terminal with an existing `~/ros2_ws` workspace and nav2lint installed in that interpreter:
+
+```bash
+cd ~/ros2_ws
+python3 -m nav2lint --init-vscode .
+```
+
+Paths such as `/path/to/nav2lint` in generic examples must be replaced with the actual checkout path; they are not literal installation locations.
 
 ## Example
 
@@ -100,7 +144,8 @@ Output for [examples/broken_humble.yaml](examples/broken_humble.yaml):
 examples/broken_humble.yaml:4: warning[S307] amcl.min_particles=500 is greater than max_particles=200
 examples/broken_humble.yaml:7: warning[T401] unknown node name `controler_server`
     did you mean `controller_server`?
-examples/broken_humble.yaml:14: warning[T404] `FollowPath.angular_dist_threshold` is not a parameter Nav2 declares here (humble); it is ignored
+examples/broken_humble.yaml:14: warning[T404] `FollowPath.angular_dist_threshold` is not in the bundled parameter tables for this scope (humble)
+    tables may be incomplete; verify the target distro and plugin documentation
 examples/broken_humble.yaml:15: warning[N002] duplicate key `plugin` (first defined on line 13); the later value silently wins
 examples/broken_humble.yaml:21: warning[S301] `local_costmap` use_sim_time differs from the other 3 nodes
 examples/broken_humble.yaml:22: error[E101] `footprint` is a nested list; ROS 2 parameters do not support nested arrays
@@ -149,7 +194,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 | S306 | warning | MPPI `model_dt` != 1/controller_frequency; horizon longer than the local costmap |
 | S307 | warning | AMCL `min_particles` > `max_particles` |
 | T401–T403 | warning | Likely misspelled node, plugin or parameter name, with a "did you mean" hint |
-| T404 | warning | Parameter that Nav2 does not declare for this node or plugin in the target distro, so it is ignored; says which distros do have it |
+| T404 | warning | Parameter absent from the bundled tables for this scope and distro; tables may be incomplete, and other recorded distros are suggested |
 
 ### How it works
 
@@ -167,10 +212,24 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 - Third-party plugin parameters get structural checks only, no type checks.
 - The source tables are a static reading of C++ code. Parameters declared through unusual helpers may be missing, which shows up as a T404 false positive; please report them.
 
+## pre-commit
+
+After v0.3.0 is published, add this to the consuming repository's `.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/Leonhart999/nav2lint
+    rev: v0.3.0
+    hooks:
+      - id: nav2lint
+```
+
+The hook does not auto-fix. On relevant YAML changes it scans `.` using Nav2 discovery, rather than treating every YAML file (such as a map description) as a parameter file. The scan checks the working tree, not only staged files, and can include pre-existing problems. Put the target distro in `.nav2lint.yaml`; add `args: [., --strict]` to fail on warnings too. The v0.3.0 tag must exist before a remote hook can use it.
+
 ## Development
 
 ```bash
-pip install -e . pytest
+pip install -e '.[dev]'
 pytest
 ```
 
