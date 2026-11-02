@@ -16,6 +16,8 @@ Attribution rules:
 - `declareParameter` (costmap layers) prefixes the layer name itself, so a literal name there is
   layer-level and `source + "." + "x"` is a sub-scope (observation source) parameter.
 - MPPI `getParam(var, "x", default)` is scoped by the getter it was obtained from.
+- Python nodes (the Jazzy/Kilted loopback simulator): literal `self.declare_parameter("x", default)`
+  calls belong to the node named in `super().__init__(node_name=...)` or `Node(...)`.
 """
 from __future__ import annotations
 
@@ -38,6 +40,8 @@ CALLS = (
 CALL_RE = re.compile(r"\b(" + "|".join(CALLS) + r")\s*(<(?:[^<>;()]|<[^<>;()]*>)*>)?\s*\(")
 STRING_RE = re.compile(r'"((?:[^"\\]|\\.)*)"')
 IDENT_RE = re.compile(r"[A-Za-z_]\w*")
+PY_NODE_RE = re.compile(r"""(?:super\(\)\.__init__|\bNode)\s*\(\s*(?:node_name\s*=\s*)?['"](\w+)['"]""")
+PY_DECLARE_RE = re.compile(r"""\bself\.declare_parameter\(\s*['"]([\w.]+)['"]\s*(?:,\s*(.*?))?\)\s*(?:#.*)?$""", re.M)
 NOT_VARS = {"std", "string", "rclcpp", "ParameterValue", "c_str", "nav2_util", "nav2"}
 
 # Which node hosts plugins of a given base class.
@@ -167,6 +171,24 @@ def infer_type_name(name: str) -> str | None:
         return "float"
     if name == "string":
         return "str"
+    return None
+
+
+def infer_py_type(expr: str) -> str | None:
+    """ROS 2 parameter type implied by a Python default value."""
+    e = expr.strip()
+    if e in ("True", "False"):
+        return "bool"
+    if re.fullmatch(r"""(['"]).*\1""", e):
+        return "str"
+    if re.fullmatch(r"-?\d+", e):
+        return "int"
+    if re.fullmatch(r"-?(\d+\.\d*|\.\d+|\d+)([eE][-+]?\d+)?", e) or e in ("math.pi", "-math.pi"):
+        return "float"
+    m = re.fullmatch(r"\[(.+)\]", e)
+    if m:
+        types = {infer_py_type(x) for x in m.group(1).split(",") if x.strip()}
+        return f"list[{types.pop()}]" if len(types) == 1 and None not in types else None
     return None
 
 
@@ -378,6 +400,16 @@ def main(argv=None) -> int:
                     (class_subs[(c, pkg)] if c else helper_subs[pkg]).add(rel, typ)
                 else:
                     (class_params[(c, pkg)] if c else helper_params[pkg]).add(rel, typ)
+
+    for p in src.rglob("*.py"):
+        if skip(p):
+            continue
+        t = p.read_text(encoding="utf-8", errors="ignore")
+        py_nodes = PY_NODE_RE.findall(t)
+        if len(set(py_nodes)) != 1:
+            continue  # no node, or several nodes in one file: attribution would be a guess
+        for m in PY_DECLARE_RE.finditer(t):
+            nodes[py_nodes[0]].add(m.group(1), infer_py_type(m.group(2) or ""))
 
     def merge(dst: Table, src_t: Table) -> None:
         for k, ts in src_t.params.items():

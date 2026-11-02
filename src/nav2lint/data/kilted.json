@@ -582,6 +582,53 @@
     "int"
    ]
   },
+  "loopback_simulator": {
+   "base_frame_id": [
+    "str"
+   ],
+   "enable_stamped_cmd_vel": [
+    "bool"
+   ],
+   "map_frame_id": [
+    "str"
+   ],
+   "odom_frame_id": [
+    "str"
+   ],
+   "publish_clock": [
+    "bool"
+   ],
+   "publish_map_odom_tf": [
+    "bool"
+   ],
+   "scan_angle_increment": [
+    "float"
+   ],
+   "scan_angle_max": [
+    "float"
+   ],
+   "scan_angle_min": [
+    "float"
+   ],
+   "scan_frame_id": [
+    "str"
+   ],
+   "scan_publish_dur": [
+    "float"
+   ],
+   "scan_range_max": [
+    "float"
+   ],
+   "scan_range_min": [
+    "float"
+   ],
+   "scan_use_inf": [
+    "bool"
+   ],
+   "update_duration": [
+    "float"
+   ]
+  },
   "map_saver": {
    "free_thresh_default": [
     "float"

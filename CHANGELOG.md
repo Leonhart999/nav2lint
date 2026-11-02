@@ -2,6 +2,17 @@
 
 All notable changes to nav2lint are documented here.
 
+## [Unreleased]
+
+### Fixed
+
+- D201 no longer reports third-party `pkg/Class` plugin names on Jazzy+ as load errors, and `--fix` no longer rewrites them. Their own plugin XML decides the registered name; for example, STVL registers `spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer`. They are now reported as info. Nav2's own plugins are still errors.
+- Parameters of the Python loopback simulator on Jazzy and Kilted (such as `enable_stamped_cmd_vel` and `publish_clock`) are no longer reported as T404. The extractor now reads literal `self.declare_parameter` calls in Python nodes. Other table entries are unchanged.
+
+### Tests
+
+- Found by linting 1,550 deduplicated real-world Nav2 parameter files from public GitHub repositories, with no crashes. Frequent E102 findings, such as integer `save_map_timeout` and float costmap `width`/`height`, were checked against the Nav2 sources and confirmed.
+
 ## [0.3.0] - 2026-11-02
 
 ### Added

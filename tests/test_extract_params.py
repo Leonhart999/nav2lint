@@ -246,3 +246,30 @@ def test_test_directories_are_skipped_and_commit_defaults_to_empty(extract):
     assert data["nodes"] == {"fixture_node": {"real_parameter": ["bool"]}}
     assert data["plugins"] == {}
     assert data["scopes"] == {}
+
+
+def test_python_node_literal_declarations(extract):
+    source, run = extract
+    pkg = package(source, "fixture_py_sim")
+    write(pkg, "fixture_py_sim/sim.py", '''
+        class Sim(Node):
+            def __init__(self):
+                super().__init__(node_name='fixture_sim')
+                self.declare_parameter('rate', 0.01)
+                self.declare_parameter('frame', "base")  # trailing comment
+                self.declare_parameter('stamped', False)
+                self.declare_parameter('count', 3)
+                self.declare_parameter('angle_min', -math.pi)
+                self.declare_parameter('weights', [0.1, 0.2])
+                self.declare_parameter('opaque', compute())
+    ''')
+    write(pkg, "fixture_py_sim/two_nodes.py", '''
+        a = Node('first')
+        b = Node('second')
+        self.declare_parameter('ambiguous', 1)
+    ''')
+    data = run()
+    assert data["nodes"] == {"fixture_sim": {
+        "angle_min": ["float"], "count": ["int"], "frame": ["str"], "opaque": [],
+        "rate": ["float"], "stamped": ["bool"], "weights": ["list[float]"],
+    }}

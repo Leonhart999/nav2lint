@@ -415,3 +415,18 @@ def test_cli_exit_codes(tmp_path, capsys):
     assert main([str(bad)]) == 1
     assert main([str(good), "--distro", "jazzy", "--format", "json"]) == 1
     assert '"rule": "D201"' in capsys.readouterr().out
+
+
+def test_third_party_slash_plugin_on_jazzy_is_not_an_error():
+    # STVL's Jazzy plugin XML registers `spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer`.
+    text = ("local_costmap:\n  local_costmap:\n    ros__parameters:\n      plugins: [stvl, inflation_layer]\n"
+            "      stvl:\n        plugin: spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer\n"
+            "      inflation_layer:\n        plugin: nav2_costmap_2d/InflationLayer\n")
+    found = [f for f in lint_text(text, "jazzy").findings if f.rule == "D201"]
+    assert [(f.severity, f.line, f.fix is None) for f in found] == [("info", 6, True), ("error", 8, False)]
+
+
+def test_python_loopback_simulator_parameters_are_known():
+    text = "loopback_simulator:\n  ros__parameters:\n    enable_stamped_cmd_vel: true\n    publish_clock: true\n"
+    for distro in ("jazzy", "kilted"):
+        assert rules_of(text, distro) == []

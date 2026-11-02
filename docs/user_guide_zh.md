@@ -299,7 +299,8 @@ my_checker:
 
 | 规则 | 级别 | 问题 | 改法 |
 |---|---|---|---|
-| D201 | error | Jazzy 起插件名用 `::`，`nav2_behaviors/Spin` 会加载失败 | 改为 `nav2_behaviors::Spin` |
+| D201 | error | Jazzy 起 Nav2 自带插件名用 `::`，`nav2_behaviors/Spin` 会加载失败 | 改为 `nav2_behaviors::Spin` |
+| D201 | info | Jazzy 起第三方插件写成 `pkg/Class`；能否加载取决于该插件自己的 plugin XML 注册的名字（例如 STVL 注册的就是 `/` 形式） | 对照插件的 XML，确认后再改；不会自动修复 |
 | D201 | warning | Humble 里 navfn、behaviors、smac、theta_star 的插件用 `/` 注册 | 改为 `nav2_navfn_planner/NavfnPlanner` 这种写法 |
 | D202 | warning | Humble 用 `progress_checker_plugin`（字符串），Jazzy 起用 `progress_checker_plugins`（列表） | 按目标版本改 |
 | D203 | warning | Jazzy 起 behavior_server 的 `costmap_topic` 改为 `local_costmap_topic`，`footprint_topic` 改为 `local_footprint_topic` | 按目标版本改 |
@@ -416,7 +417,7 @@ nav2lint --fix nav2_params.yaml    # 改写文件，然后报告剩下的问题
 | N003 | `ros_parameters` 改成 `ros__parameters` |
 | E101 | 行内数组里的整数改成浮点数；写成行内嵌套列表的 `footprint` 加上引号变成字符串 |
 | E102 | double 参数的 `1` 改成 `1.0`，整数参数的 `2000.0` 改成 `2000`，行内整数数组改成浮点数组 |
-| D201 | 按目标版本把插件名的 `/` 和 `::` 互换 |
+| D201 | 按目标版本把 Nav2 自带插件名的 `/` 和 `::` 互换（第三方插件不改） |
 | D202 | `progress_checker_plugin: "x"` 和 `progress_checker_plugins: ["x"]` 互换 |
 | D203 | behavior_server 话题参数改名 |
 | D204 | 从 `plugin_lib_names` 里删掉内置 BT 节点；删完为空时把这个参数也删掉 |
@@ -485,7 +486,7 @@ new_text, n_fixed, remaining = fix_text(open("nav2_params.yaml", encoding="utf-8
 
 **原理**
 - 参数名和类型有两个来源：
-  - 从 Nav2 各发行版 C++ 源码中提取的参数表（`src/nav2lint/data/`，由 `tools/extract_params.py` 生成，记录了对应的 navigation2 commit）。提取器识别 `declare_parameter`、`declare_parameter_if_not_declared`、costmap 的 `declareParameter`、MPPI 的 `getParam`、DWB 的 `searchAndGetParam` 和 `declare_or_get_parameter`，类型取自默认值。每个版本 1000–1700 个参数；
+  - 从 Nav2 各发行版源码中提取的参数表（`src/nav2lint/data/`，由 `tools/extract_params.py` 生成，记录了对应的 navigation2 commit）。提取器识别 `declare_parameter`、`declare_parameter_if_not_declared`、costmap 的 `declareParameter`、MPPI 的 `getParam`、DWB 的 `searchAndGetParam`、`declare_or_get_parameter`，以及 Python 节点（Jazzy/Kilted 的 loopback simulator）里的 `self.declare_parameter`，类型取自默认值。每个版本 1000–1700 个参数；
   - 各发行版官方的 `nav2_bringup/params/nav2_params.yaml`（`src/nav2lint/refs/`），用来补上提取器漏掉的少数参数。
 - 迁移规则来自 Nav2 官方迁移指南，并对照 navigation2 各分支的源码核对过。
 - 读 YAML 时保留每个值的行号，并检查重复 key。普通 YAML 库做不到这两点。

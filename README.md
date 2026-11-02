@@ -62,7 +62,7 @@ E102 and T404 findings include an additive `evidence` array in JSON output. Othe
 | N003 | `ros_parameters` -> `ros__parameters` |
 | E101 | integers in a mixed inline array -> floats; inline nested `footprint` -> quoted string |
 | E102 | `1` -> `1.0` for double parameters, `2000.0` -> `2000` for integer ones, inline integer arrays -> float arrays |
-| D201 | plugin separator `/` <-> `::` for the target distro |
+| D201 | plugin separator `/` <-> `::` for the target distro (Nav2's own plugins only) |
 | D202 | `progress_checker_plugin: "x"` <-> `progress_checker_plugins: ["x"]` |
 | D203 | behavior_server topic key renames |
 | D204 | deletes the built-in BT nodes from `plugin_lib_names` (and the key if nothing is left) |
@@ -175,7 +175,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 | P101 | error/warning | Name listed in a plugin list but never defined |
 | P102 | error | Plugin instance without a `plugin` field (Nav2 default ids excepted) |
 | P103 | info | Costmap layer defined but not in `plugins`/`filters`, so never loaded |
-| D201 | error | Plugin separator: Jazzy+ uses `pkg::Class`; some Humble packages use `pkg/Class` |
+| D201 | error/warning/info | Plugin separator: Jazzy+ Nav2 plugins use `pkg::Class`; some Humble packages use `pkg/Class`. A third-party `pkg/Class` on Jazzy+ is only info, because its own plugin XML decides the name |
 | D202 | warning | `progress_checker_plugin` (Humble) vs `progress_checker_plugins` (Jazzy+) |
 | D203 | warning | behavior_server renames such as `costmap_topic` -> `local_costmap_topic` |
 | D204 | warning | Since Jazzy `plugin_lib_names` lists only custom BT nodes; built-ins load automatically |
@@ -199,7 +199,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 ### How it works
 
 - Parameter names and types come from two sources per distro:
-  - tables extracted from the Nav2 C++ sources by [tools/extract_params.py](tools/extract_params.py) (see [src/nav2lint/data/](src/nav2lint/data/)): every `declare_parameter`, `declare_parameter_if_not_declared`, costmap `declareParameter`, MPPI `getParam`, DWB `searchAndGetParam` and `declare_or_get_parameter` call, with the type taken from the default value. About 1,000–1,700 parameters per distro across all nodes and built-in plugins;
+  - tables extracted from the Nav2 sources by [tools/extract_params.py](tools/extract_params.py) (see [src/nav2lint/data/](src/nav2lint/data/)): every `declare_parameter`, `declare_parameter_if_not_declared`, costmap `declareParameter`, MPPI `getParam`, DWB `searchAndGetParam` and `declare_or_get_parameter` call, plus `self.declare_parameter` in Python nodes (the Jazzy/Kilted loopback simulator), with the type taken from the default value. About 1,000–1,700 parameters per distro across all nodes and built-in plugins;
   - the official `nav2_bringup/params/nav2_params.yaml` of each distro (see [src/nav2lint/refs/](src/nav2lint/refs/)), which covers the few parameters the extractor misses.
 - T404 runs only for nodes and plugins found in those tables. Third-party plugins and nodes get structural checks and the conservative T403 spell check: a key is reported only if one of its words is unknown, e.g. `inflation_raduis`.
 - Migration rules (D2xx) come from the official Nav2 migration guides, cross-checked against the navigation2 source on each branch.

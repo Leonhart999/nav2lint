@@ -22,6 +22,7 @@ from .schema import (
     declared,
     declared_union,
     is_placeholder,
+    nav2_plugin_packages,
     normalize_plugin,
     parameter_info,
     reference,
@@ -492,7 +493,12 @@ def check_migration(ctx: Context) -> None:
             line = key_line(sc, "plugin")
             if jazzy_plus and "/" in sc.plugin:
                 new = normalize_plugin(sc.plugin)
-                ctx.add("D201", ERROR, line, f"{d} plugin names use `::`; `{sc.plugin}` will fail to load", f"use {new}", fix_sub(ctx, line, re.escape(sc.plugin), new))
+                if sc.plugin.split("/")[0] in nav2_plugin_packages():
+                    ctx.add("D201", ERROR, line, f"{d} plugin names use `::`; `{sc.plugin}` will fail to load", f"use {new}", fix_sub(ctx, line, re.escape(sc.plugin), new))
+                else:
+                    # A third-party plugin is looked up by the name its own plugin XML registers.
+                    ctx.add("D201", INFO, line, f"`{sc.plugin}` uses `/`; Nav2's own plugins use `::` since Jazzy",
+                            f"keep it if the plugin's XML registers this name, otherwise use {new}")
             if d == "humble" and "::" in sc.plugin and sc.plugin.split("::")[0] in SLASH_PACKAGES:
                 new = sc.plugin.replace("::", "/")
                 ctx.add("D201", WARNING, line, f"in Humble, {sc.plugin.split('::')[0]} plugins are registered as `pkg/Class`", f"use {new}", fix_sub(ctx, line, re.escape(sc.plugin), new))

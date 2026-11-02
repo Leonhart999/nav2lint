@@ -308,6 +308,14 @@ def nav2_nodes() -> frozenset[str]:
     return frozenset(names)
 
 
+@lru_cache(maxsize=None)
+def nav2_plugin_packages() -> frozenset[str]:
+    """Packages whose plugins Nav2 itself ships (from the source tables and the official configs)."""
+    names = {sch[len("plugin:") :].split("::")[0] for sch in declared_union() if sch.startswith("plugin:")}
+    names |= {p.split("::")[0] for p in union_reference().plugins}
+    return frozenset(names)
+
+
 def distros_declaring(schema: str, key: str) -> list[str]:
     return [d for d in DISTROS if key in declared(d).tables.get(schema, {})]
 
