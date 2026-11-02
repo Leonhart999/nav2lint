@@ -10,7 +10,7 @@ A wrong Nav2 parameter usually shows up only after launch, as a cryptic type err
 pip install -e .        # from this repository
 ```
 
-The only dependency is PyYAML. Python 3.8+, works on Windows, Linux and WSL.
+The only dependency is PyYAML. Python 3.9+, works on Windows, Linux and WSL.
 
 Inside a ROS 2 environment (PyYAML is already installed) you can also run it without installing:
 
