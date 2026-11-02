@@ -1,3 +1,5 @@
+[中文](https://github.com/Leonhart999/nav2lint/blob/main/README.zh-CN.md) | [ENG](https://github.com/Leonhart999/nav2lint/blob/main/README.md)
+
 # nav2lint
 
 Static checker for ROS 2 Nav2 parameter files (`nav2_params.yaml`). It needs no ROS install and does not start Nav2; it points at the offending line in milliseconds.
@@ -210,7 +212,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 - Parameter overrides from launch files (`RewrittenYaml`, `use_sim_time` passed by launch) are not resolved.
 - Behavior tree XML files are not checked.
 - Third-party plugin parameters get structural checks only, no type checks.
-- The source tables are a static reading of C++ code. Parameters declared through unusual helpers may be missing, which shows up as a T404 false positive; please report them.
+- The source tables are a static reading of the Nav2 sources. Parameters declared through unusual helpers may be missing, which shows up as a T404 false positive; please report them.
 
 ## pre-commit
 
