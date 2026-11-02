@@ -214,17 +214,17 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 
 ## pre-commit
 
-After v0.3.0 is published, add this to the consuming repository's `.pre-commit-config.yaml`:
+Add this to the consuming repository's `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
   - repo: https://github.com/Leonhart999/nav2lint
-    rev: v0.3.0
+    rev: v0.3.1
     hooks:
       - id: nav2lint
 ```
 
-The hook does not auto-fix. On relevant YAML changes it scans `.` using Nav2 discovery, rather than treating every YAML file (such as a map description) as a parameter file. The scan checks the working tree, not only staged files, and can include pre-existing problems. Put the target distro in `.nav2lint.yaml`; add `args: [., --strict]` to fail on warnings too. The v0.3.0 tag must exist before a remote hook can use it.
+The hook does not auto-fix. On relevant YAML changes it scans `.` using Nav2 discovery, rather than treating every YAML file (such as a map description) as a parameter file. The scan checks the working tree, not only staged files, and can include pre-existing problems. Put the target distro in `.nav2lint.yaml`; add `args: [., --strict]` to fail on warnings too.
 
 ## Development
 

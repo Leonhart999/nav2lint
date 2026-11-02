@@ -524,17 +524,17 @@ JSON 诊断为 E102 和 T404 增加 `evidence` 列表，给出参数的已知类
 
 ## 13. pre-commit 与自动测试
 
-v0.3.0 发布后，其他仓库可配置：
+其他仓库可配置：
 
 ```yaml
 repos:
   - repo: https://github.com/Leonhart999/nav2lint
-    rev: v0.3.0
+    rev: v0.3.1
     hooks:
       - id: nav2lint
 ```
 
-hook 不自动修复；相关 YAML 改动触发后扫描整个工作树中的 Nav2 参数文件，而不是把地图等所有 YAML 都当作参数文件。它可能报告尚未暂存的修改或已有问题。发行版在 `.nav2lint.yaml` 设置，想让 warning 也阻止提交，可添加 `args: [., --strict]`。远端必须已有 v0.3.0 标签才能使用上述 rev；本地开发完成不代表已经公开发布。
+hook 不自动修复；相关 YAML 改动触发后扫描整个工作树中的 Nav2 参数文件，而不是把地图等所有 YAML 都当作参数文件。它可能报告尚未暂存的修改或已有问题。发行版在 `.nav2lint.yaml` 设置，想让 warning 也阻止提交，可添加 `args: [., --strict]`。
 
 仓库新增 Windows/Linux 多 Python 版本的 CI、wheel 安装验证和提取器小型回归样例。CI 文件存在不代表已经在 GitHub 跑过，发布时应以实际 Actions 结果为准。
 

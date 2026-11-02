@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nav2lint"
-version = "0.3.0"
+version = "0.3.1"
 description = "Static checker for ROS 2 Nav2 parameter files"
 readme = "README.md"
 requires-python = ">=3.9"
