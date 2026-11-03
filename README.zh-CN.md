@@ -4,11 +4,17 @@
 
 ROS 2 Nav2 参数文件（`nav2_params.yaml`）的静态检查工具。不需要安装 ROS，也不会启动 Nav2，几毫秒内就能指出出错的行。
 
-Nav2 参数写错，通常要等到启动后才在日志里看到一条难懂的类型错误，或者因为该值被悄悄忽略而根本没有报错。nav2lint 能在启动前发现这些问题。
+Nav2 参数写错，通常要等到启动后才在日志里看到一条难懂的类型错误，或者因为该值被悄悄忽略而根本没有报错。nav2lint 能在启动前检查其中的许多问题，但不能替代实际运行验证。
 
-![nav2lint 演示：检查、自动修复、再检查](docs/demo.gif)
+![nav2lint 演示：检查、自动修复、报告剩余问题](docs/demo.gif)
 
 **第一次用？** 先看 [5 分钟上手](docs/quickstart_zh.md)，照着做就能跑起来。更详细的说明见[中文使用指南](docs/user_guide_zh.md)。
+
+## 项目状态
+
+**第一阶段完成，自 2026-11-03 起转为维护模式。** 最新 Release 为 [v0.3.1](https://github.com/Leonhart999/nav2lint/releases/tag/v0.3.1)。继续接受可复现的 bug、误报和文档纠错；新增功能留待有明确使用需求时再评估。仓库不归档，不承诺固定响应时间或未来发行版支持。
+
+已交付能力、验证依据、已知限制和问题反馈方式见[阶段总结与维护计划](docs/project_status_zh.md)。`main` 上的文档可能比版本标签中的更新。
 
 ## 安装
 
@@ -41,7 +47,7 @@ nav2lint --fix --distro jazzy old.yaml    # 直接修改文件，然后报告剩
 
 检查目录时，nav2lint 只挑出含有 Nav2 节点 `ros__parameters` 段的 YAML 文件，并跳过隐藏目录和 colcon 的 `build/`、`install/`、`log/`。命令行中明确指定的文件总会被检查。
 
-退出码：没有 error 时为 0；有 error 时为 1（使用 `--strict` 时 warning 也算）；文件无法读取或配置文件无效时为 2。
+文件检查的退出码：没有 error 时为 0；有 error 时为 1（使用 `--strict` 时 warning 也算）；文件无法读取或配置文件无效时为 2。`--diff` 仅作预览，成功预览时即使存在改动也返回 0；CI 判断是否通过应使用普通检查。
 
 ## 解释规则与查询参数依据
 
@@ -205,7 +211,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 ### 工作原理
 
 - 每个发行版的参数名和类型有两个来源：
-  - 由 [tools/extract_params.py](tools/extract_params.py) 从 Nav2 源码中提取的参数表（见 [src/nav2lint/data/](src/nav2lint/data/)）：包括所有 `declare_parameter`、`declare_parameter_if_not_declared`、costmap 的 `declareParameter`、MPPI 的 `getParam`、DWB 的 `searchAndGetParam` 和 `declare_or_get_parameter` 调用，以及 Python 节点（Jazzy/Kilted 的 loopback simulator）中的 `self.declare_parameter`，类型取自默认值。每个发行版在所有节点和内置插件中约有 1,000–1,700 个参数；
+  - 由 [tools/extract_params.py](tools/extract_params.py) 从 Nav2 源码中提取的参数表（见 [src/nav2lint/data/](src/nav2lint/data/)）：识别 `declare_parameter`、`declare_parameter_if_not_declared`、costmap 的 `declareParameter`、MPPI 的 `getParam`、DWB 的 `searchAndGetParam` 和 `declare_or_get_parameter` 调用，以及 Python 节点（Jazzy/Kilted 的 loopback simulator）中的 `self.declare_parameter`，类型取自默认值。每个发行版在所有节点和内置插件中约有 1,000–1,700 个参数；
   - 各发行版官方的 `nav2_bringup/params/nav2_params.yaml`（见 [src/nav2lint/refs/](src/nav2lint/refs/)），用于补充提取器遗漏的少量参数。
 - T404 只对参数表中有的节点和插件生效。第三方插件和节点只做结构检查和保守的 T403 拼写检查：只有当键名中某个单词不认识时才报告，例如 `inflation_raduis`。
 - 迁移规则（D2xx）来自 Nav2 官方迁移指南，并对照各分支的 navigation2 源码核实。

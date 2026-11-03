@@ -39,6 +39,33 @@ def test_line_format_puts_hint_inline(capsys):
     assert "inflation_radius` should be float but is int; Nav2 will fail with a parameter type mismatch -- write 1.0" in out
 
 
+def test_quickstart_example_check_preview_and_fix(tmp_path, capsys):
+    target = tmp_path / "nav2_params.yaml"
+    original = (ROOT / "examples" / "quickstart_humble.yaml").read_text(encoding="utf-8")
+    target.write_text(original, encoding="utf-8")
+    args = ["--no-config", "--no-color", "--distro", "humble", str(target)]
+
+    assert main(args) == 1
+    output = capsys.readouterr().out
+    assert ":3: warning[S307]" in output
+    assert ":12: error[E102]" in output
+    assert "1 error, 1 warning, 0 info; 1 fixable with --fix" in output
+    assert target.read_text(encoding="utf-8") == original
+
+    assert main([*args, "--diff"]) == 0
+    output = capsys.readouterr().out
+    assert "+        inflation_radius: 1.0" in output
+    assert target.read_text(encoding="utf-8") == original
+
+    assert main([*args, "--fix"]) == 0
+    captured = capsys.readouterr()
+    output = captured.out
+    assert "fixed 1 issue(s)" in captured.err
+    assert "0 error, 1 warning, 0 info" in output
+    assert "[S307]" in output and "[E102]" not in output
+    assert target.read_text(encoding="utf-8") == original.replace("inflation_radius: 1\n", "inflation_radius: 1.0\n")
+
+
 def test_collect_finds_only_nav2_files(tmp_path):
     (tmp_path / "nav").mkdir()
     (tmp_path / "nav" / "nav2.yaml").write_text((REFS / "humble.yaml").read_text(encoding="utf-8"), encoding="utf-8")

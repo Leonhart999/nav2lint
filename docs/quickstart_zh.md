@@ -4,11 +4,11 @@
 
 这一页写给第一次用 nav2lint 的人，不需要懂它的原理，照着做就行。
 
-![nav2lint 演示：检查、自动修复、再检查](demo.gif)
+![nav2lint 演示：检查、自动修复、报告剩余问题](demo.gif)
 
 ## 它能帮你做什么
 
-Nav2 的参数都写在一个 YAML 文件里，通常叫 `nav2_params.yaml`。这个文件写错了，往往要等 `ros2 launch` 之后才在一大堆日志里看到报错，有时候甚至不报错，参数只是悄悄不生效。
+Nav2 的参数通常集中写在一个叫 `nav2_params.yaml` 的 YAML 文件里，也有项目使用多份文件和启动时覆盖。这个文件写错了，往往要等 `ros2 launch` 之后才在一大堆日志里看到报错，有时候甚至不报错，参数只是悄悄不生效。
 
 nav2lint 在启动之前把这个文件读一遍，告诉你**第几行**有什么问题、怎么改。它不需要启动 ROS，也不会改动你的机器人。
 
@@ -28,12 +28,15 @@ nav2lint 在启动之前把这个文件读一遍，告诉你**第几行**有什�
 **Ubuntu 22.04（ROS 2 Humble）**，在终端里运行：
 
 ```bash
+sudo apt update
+sudo apt install python3-pip
 python3 -m pip install --user "nav2lint @ https://github.com/Leonhart999/nav2lint/archive/refs/tags/v0.3.1.zip"
 ```
 
 **Ubuntu 24.04（ROS 2 Jazzy）** 不允许直接用 pip 往系统里装包（会报 `externally-managed-environment`），改用 pipx：
 
 ```bash
+sudo apt update
 sudo apt install pipx
 pipx install "nav2lint @ https://github.com/Leonhart999/nav2lint/archive/refs/tags/v0.3.1.zip"
 pipx ensurepath
@@ -55,7 +58,7 @@ nav2lint 要知道你用的是哪个 ROS 2 发行版，因为不同版本的参�
 ls /opt/ros
 ```
 
-会显示 `humble`、`jazzy` 这样的名字，下面的命令里就填它。
+会显示 `humble`、`jazzy` 这样的已安装发行版名称。如果有多个，选你的项目实际运行的那个；`printenv ROS_DISTRO` 可查看当前终端已加载的发行版，没有加载 ROS 环境时会为空。nav2lint 支持 `humble`、`jazzy`、`kilted` 和 `rolling`。
 
 ## 第 3 步：检查
 
@@ -68,7 +71,7 @@ nav2lint --distro humble nav2_params.yaml
 
 ## 第 4 步：看懂结果
 
-输出大概长这样：
+下面的输出来自特意写错的[演示配置](../examples/quickstart_humble.yaml)。想复现的话，把它下载到临时目录，命名为 `nav2_params.yaml`，再执行第 3 步。你自己的文件会产生不同的结果。
 
 ```
 nav2_params.yaml:3: warning[S307] amcl.min_particles=500 is greater than max_particles=200
@@ -93,9 +96,11 @@ nav2_params.yaml:12: error[E102] `inflation_layer.inflation_radius` should be fl
 
 | 级别 | 意思 | 要不要改 |
 |---|---|---|
-| `error` | Nav2 启动会失败，或者这个参数根本不生效 | **必须改** |
-| `warning` | 能启动，但很可能和你想的不一样，比如参数被忽略、数值互相矛盾 | 建议逐条看一下 |
-| `info` | 仅供参考，默认不显示 | 可以不管 |
+| `error` | 检测到可能导致启动、节点配置或参数加载失败的问题 | **优先核查**，结合目标版本确认后修正 |
+| `warning` | 可能存在拼写、迁移或数值一致性问题，也可能是有意设置 | 建议逐条确认 |
+| `info` | 帮助判断的背景提示，默认不显示 | 按需查看 |
+
+这些是静态检查，不是对实际运行结果的保证。没有报错，也不代表导航一定安全或参数调得合适。
 
 **看不懂某一条？** 用规则编号查它的解释：
 
@@ -105,7 +110,7 @@ nav2lint --explain E102
 
 程序的输出是英文的，看不懂可以把那一行复制到翻译软件里。
 
-> 关于 `T404`（参数不在内置参数表里）：它的意思是“没在 Nav2 源码里找到这个参数”，常见原因是拼错了、放错了位置，或者是旧版本 Nav2 才有的参数。但 nav2lint 的参数表不一定完整，所以 T404 不一定代表你写错了，拿不准的时候对照一下 Nav2 官方文档。
+> 关于 `T404`（参数不在内置参数表里）：它表示 nav2lint 的内置表没有记录该作用域和发行版下的这个参数，不能据此断定 Nav2 源码里没有它，或它在运行时不生效。可能是拼错、作用域或发行版不对，也可能是参数表遗漏。修改或删除前，请核对目标版本的官方文档和参数依据。
 
 ## 第 5 步：修复
 
@@ -136,13 +141,16 @@ nav2lint --distro humble ~/ros2_ws/src
 ## 常见问题
 
 **`nav2lint: command not found`**
-先关掉终端重新打开一次。还不行的话，用 `python3 -m nav2lint` 代替 `nav2lint`，效果完全一样，例如 `python3 -m nav2lint --version`。
+需要按安装方式区分：
+
+- **用 pipx 安装：** 运行 `pipx list` 确认已安装 nav2lint，再执行 `pipx ensurepath`，重新打开终端。pipx 的环境是隔离的，不能直接用系统的 `python3 -m nav2lint` 代替。
+- **用 pip 的 `--user` 安装：** 用安装时的同一个 Python 执行 `python3 -m nav2lint --version`。如果成功，说明已安装，只是命令目录没有加入 PATH。Ubuntu 默认目录为 `~/.local/bin`；运行 `export PATH="$HOME/.local/bin:$PATH"` 可在当前终端生效，使用 Bash 时也可将这一行加入 `~/.bashrc`。
 
 **`python: command not found`**
 Ubuntu 上要写 `python3`，不是 `python`。
 
 **`error: externally-managed-environment`**
-你用的是 Ubuntu 24.04，请按第 1 步里 pipx 的方法安装。
+你的 Python 环境由操作系统管理（Ubuntu 24.04 及更新版本常见），请按第 1 步里 pipx 的方法安装，不要用 `--break-system-packages` 绕过保护。
 
 **`could not detect the distro ... use --distro to set it`**
 nav2lint 没能自己判断出 ROS 2 版本，按第 2 步查到版本后，在命令里加上 `--distro humble`（或 `jazzy` 等）。

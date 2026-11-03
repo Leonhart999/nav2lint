@@ -9,6 +9,14 @@ All notable changes to nav2lint are documented here.
 - Add a step-by-step 5-minute quick start for first-time users in English and Chinese, covering installation without git, finding the parameter file and distro, reading findings, safe fixing, and common errors.
 - Add a terminal demo animation to both READMEs and the quick starts. Its output is captured from a real nav2lint run.
 - Add a Chinese README with an English/Chinese language switch.
+- Mark Phase 1 complete and document maintenance mode, milestone evidence, limitations, deferred work, and reproducible issue reporting in English and Chinese.
+- Correct quick-start severity and T404 explanations, distinguish pipx from user-pip troubleshooting, and clarify installation prerequisites and distro selection.
+- Check in the intentionally broken demo YAML so readers can reproduce the quick-start findings without using a robot configuration.
+- Add a minimal bug/false-positive issue template and clarify preview-mode exit codes.
+
+### Tests
+
+- Add a regression for the quick-start example: checking and previewing leave the file unchanged; fixing removes E102 but retains S307. The full suite now contains 213 tests.
 
 ## [0.3.1] - 2026-11-03
 

@@ -4,11 +4,17 @@
 
 Static checker for ROS 2 Nav2 parameter files (`nav2_params.yaml`). It needs no ROS install and does not start Nav2; it points at the offending line in milliseconds.
 
-A wrong Nav2 parameter usually shows up only after launch, as a cryptic type error in the log, or not at all because the value is silently ignored. nav2lint catches these before you launch.
+A wrong Nav2 parameter usually shows up only after launch, as a cryptic type error in the log, or not at all because the value is silently ignored. nav2lint checks for many of these issues before you launch; it cannot replace runtime validation.
 
-![nav2lint demo: check, auto-fix, check again](https://raw.githubusercontent.com/Leonhart999/nav2lint/main/docs/demo.gif)
+![nav2lint demo: check, auto-fix, report remaining findings](https://raw.githubusercontent.com/Leonhart999/nav2lint/main/docs/demo.gif)
 
 **New to nav2lint?** Start with the [5-minute quick start](https://github.com/Leonhart999/nav2lint/blob/main/docs/quickstart.md).
+
+## Project status
+
+**Phase 1 complete; maintenance mode as of 2026-11-03.** The latest release is [v0.3.1](https://github.com/Leonhart999/nav2lint/releases/tag/v0.3.1). Reproducible bugs, false positives, and documentation corrections remain welcome; new features are deferred until there is a concrete user need. The repository is not archived, and no response-time or future-distro support commitment is implied.
+
+See the [milestone report and maintenance plan](https://github.com/Leonhart999/nav2lint/blob/main/docs/project_status.md) for delivered capabilities, validation evidence, limitations, and how to report a problem. Documentation on `main` may be newer than the release tag.
 
 ## Install
 
@@ -41,7 +47,7 @@ nav2lint --fix --distro jazzy old.yaml    # apply them in place, then report wha
 
 For a directory, nav2lint picks the YAML files that have a `ros__parameters` section for a Nav2 node, and skips hidden directories and colcon's `build/`, `install/` and `log/`. Files named explicitly are always checked.
 
-Exit codes: 0 when there are no errors, 1 when there are errors (or warnings with `--strict`), 2 when a file cannot be read or a config file is invalid.
+Exit codes for file checks: 0 when there are no errors, 1 when there are errors (or warnings with `--strict`), 2 when a file cannot be read or a config file is invalid. `--diff` is preview-only: it exits 0 on a successful preview even when changes are shown; use a normal check for a CI pass/fail decision.
 
 ## Explain rules and parameter evidence
 
@@ -205,7 +211,7 @@ examples/broken_humble.yaml:46: error[S304] velocity_smoother.max_decel must be 
 ### How it works
 
 - Parameter names and types come from two sources per distro:
-  - tables extracted from the Nav2 sources by [tools/extract_params.py](tools/extract_params.py) (see [src/nav2lint/data/](src/nav2lint/data/)): every `declare_parameter`, `declare_parameter_if_not_declared`, costmap `declareParameter`, MPPI `getParam`, DWB `searchAndGetParam` and `declare_or_get_parameter` call, plus `self.declare_parameter` in Python nodes (the Jazzy/Kilted loopback simulator), with the type taken from the default value. About 1,000–1,700 parameters per distro across all nodes and built-in plugins;
+  - tables extracted from the Nav2 sources by [tools/extract_params.py](tools/extract_params.py) (see [src/nav2lint/data/](src/nav2lint/data/)): recognized `declare_parameter`, `declare_parameter_if_not_declared`, costmap `declareParameter`, MPPI `getParam`, DWB `searchAndGetParam` and `declare_or_get_parameter` calls, plus `self.declare_parameter` in Python nodes (the Jazzy/Kilted loopback simulator), with the type taken from the default value. About 1,000–1,700 parameters per distro across all nodes and built-in plugins;
   - the official `nav2_bringup/params/nav2_params.yaml` of each distro (see [src/nav2lint/refs/](src/nav2lint/refs/)), which covers the few parameters the extractor misses.
 - T404 runs only for nodes and plugins found in those tables. Third-party plugins and nodes get structural checks and the conservative T403 spell check: a key is reported only if one of its words is unknown, e.g. `inflation_raduis`.
 - Migration rules (D2xx) come from the official Nav2 migration guides, cross-checked against the navigation2 source on each branch.
