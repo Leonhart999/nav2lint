@@ -2,6 +2,14 @@
 
 All notable changes to nav2lint are documented here.
 
+## [Unreleased]
+
+### Documentation
+
+- Add a step-by-step 5-minute quick start for first-time users in English and Chinese, covering installation without git, finding the parameter file and distro, reading findings, safe fixing, and common errors.
+- Add a terminal demo animation to both READMEs and the quick starts. Its output is captured from a real nav2lint run.
+- Add a Chinese README with an English/Chinese language switch.
+
 ## [0.3.1] - 2026-11-03
 
 ### Fixed

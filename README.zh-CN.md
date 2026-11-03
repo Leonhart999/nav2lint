@@ -6,7 +6,9 @@ ROS 2 Nav2 参数文件（`nav2_params.yaml`）的静态检查工具。不需要
 
 Nav2 参数写错，通常要等到启动后才在日志里看到一条难懂的类型错误，或者因为该值被悄悄忽略而根本没有报错。nav2lint 能在启动前发现这些问题。
 
-更详细的说明见[中文使用指南](docs/user_guide_zh.md)。
+![nav2lint 演示：检查、自动修复、再检查](docs/demo.gif)
+
+**第一次用？** 先看 [5 分钟上手](docs/quickstart_zh.md)，照着做就能跑起来。更详细的说明见[中文使用指南](docs/user_guide_zh.md)。
 
 ## 安装
 

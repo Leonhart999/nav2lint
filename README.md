@@ -6,6 +6,10 @@ Static checker for ROS 2 Nav2 parameter files (`nav2_params.yaml`). It needs no 
 
 A wrong Nav2 parameter usually shows up only after launch, as a cryptic type error in the log, or not at all because the value is silently ignored. nav2lint catches these before you launch.
 
+![nav2lint demo: check, auto-fix, check again](https://raw.githubusercontent.com/Leonhart999/nav2lint/main/docs/demo.gif)
+
+**New to nav2lint?** Start with the [5-minute quick start](https://github.com/Leonhart999/nav2lint/blob/main/docs/quickstart.md).
+
 ## Install
 
 ```bash

@@ -39,6 +39,8 @@ D:\projects\nav2lint\.venv\Scripts\nav2lint --version
 
 ## 2. 快速上手
 
+第一次接触 nav2lint、对命令行也不太熟的话，建议先看 [5 分钟上手](quickstart_zh.md)，里面从安装到看懂结果一步步讲。
+
 ```bash
 nav2lint --distro humble ~/ros2_ws/src/lidar_nav/config/nav2_params_sim.yaml
 ```
